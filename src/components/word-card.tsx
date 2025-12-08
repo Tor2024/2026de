@@ -1,0 +1,152 @@
+
+'use client';
+
+import type { VocabularyWord } from '@/lib/types';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { useState, useEffect } from 'react';
+import { RefreshCw } from 'lucide-react';
+import { cn } from '@/lib/utils';
+
+export function WordCard({ word }: { word: VocabularyWord }) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  // Reset flip state when the word changes
+  useEffect(() => {
+    setIsFlipped(false);
+  }, [word]);
+
+  const handleFlip = () => setIsFlipped(!isFlipped);
+
+  const getGermanDisplay = () => {
+    if (word.type === 'noun') {
+      return `${word.article} ${word.german}`;
+    }
+    return word.german;
+  };
+  
+  const getRussianType = (type: VocabularyWord['type']) => {
+    switch (type) {
+        case 'noun': return 'существительное';
+        case 'verb': return 'глагол';
+        case 'adjective': return 'прилагательное';
+        case 'conjunction': return 'союз';
+        case 'preposition': return 'предлог';
+        case 'other': return 'другое';
+        default: return type;
+    }
+  };
+
+  const getGermanType = (type: VocabularyWord['type']) => {
+    switch (type) {
+        case 'noun': return 'Nomen';
+        case 'verb': return 'Verb';
+        case 'adjective': return 'Adjektiv';
+        case 'conjunction': return 'Konjunktion';
+        case 'preposition': return 'Präposition';
+        case 'other': return 'Andere';
+        default: return type;
+    }
+  };
+
+
+  const renderDetails = () => {
+    switch (word.type) {
+      case 'noun':
+        return (
+          <>
+            <p><span className="font-semibold">Ед. число:</span> {word.article} {word.german}</p>
+            <p><span className="font-semibold">Мн. число:</span> {word.pluralArticle} {word.plural}</p>
+            <p className="mt-2 italic text-muted-foreground">Пример (ед.ч.): {word.exampleSingular}</p>
+            <p className="italic text-muted-foreground">Пример (мн.ч.): {word.examplePlural}</p>
+          </>
+        );
+      case 'verb':
+        return (
+          <>
+            <p className="italic text-muted-foreground">{word.conjugation}</p>
+            <p className="mt-2 italic text-muted-foreground">Пример: {word.example}</p>
+          </>
+        );
+      case 'adjective':
+        return (
+          <>
+            <p>{word.german} → {word.comparative} → {word.superlative}</p>
+            <p className="mt-2 italic text-muted-foreground">Пример: {word.example}</p>
+          </>
+        );
+      case 'conjunction':
+        return (
+          <>
+            <p className="italic text-muted-foreground">{word.structure}</p>
+            <p className="mt-2 italic text-muted-foreground">Пример: {word.example}</p>
+          </>
+        );
+      case 'preposition':
+        return (
+            <>
+                <p className="font-semibold">Требует падеж: <span className="text-primary">{word.case}</span></p>
+                <p className="mt-2 italic text-muted-foreground">Пример: {word.example}</p>
+            </>
+        );
+      default:
+        if ('example' in word) {
+          return <p className="italic text-muted-foreground">{word.example}</p>;
+        }
+        return null;
+    }
+  };
+
+  return (
+    <div
+      className="relative cursor-pointer rounded-lg border bg-card text-card-foreground shadow-sm transition-transform duration-500 [transform-style:preserve-3d]"
+      onClick={handleFlip}
+      style={{ transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)' }}
+    >
+      {/* Front of the card (German) */}
+      <div className={cn("flex min-h-[215px] flex-col p-4 [backface-visibility:hidden]")}>
+        <div className="flex-1">
+            <div className="flex justify-between items-start">
+                <p className="text-2xl font-bold">{getGermanDisplay()}</p>
+                <Badge variant="secondary">{getGermanType(word.type)}</Badge>
+            </div>
+            <Separator className="my-3" />
+            <div className="text-sm space-y-1">
+                {renderDetails()}
+            </div>
+        </div>
+        <div className="mt-2 flex items-center justify-end gap-1 text-xs text-muted-foreground">
+            <RefreshCw className="h-3 w-3"/>
+            <span>Нажмите, чтобы перевернуть</span>
+        </div>
+      </div>
+
+      {/* Back of the card (Russian) */}
+      <div
+        className={cn("absolute inset-0 flex min-h-[215px] flex-col rounded-lg border bg-card p-4 text-card-foreground [backface-visibility:hidden] [transform:rotateY(180deg)]")}
+      >
+        <div className="flex-1">
+            <div className="flex justify-between items-start">
+                <div>
+                    <p className="text-2xl font-bold flex items-center gap-2">
+                        {word.russian}
+                    </p>
+                    <p className="text-lg text-muted-foreground">{getGermanDisplay()}</p>
+                </div>
+                <Badge variant="outline">{getRussianType(word.type)}</Badge>
+            </div>
+            <Separator className="my-3" />
+            <div className="text-sm space-y-1">
+                {renderDetails()}
+            </div>
+        </div>
+         <div className="mt-2 flex items-center justify-end gap-1 text-xs text-muted-foreground">
+            <RefreshCw className="h-3 w-3"/>
+            <span>Нажмите, чтобы перевернуть</span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+    
