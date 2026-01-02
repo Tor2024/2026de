@@ -2805,48 +2805,48 @@ export const curriculum: Curriculum = {
           id: 'b1-2-medien-digital',
           title: 'B1.2 СМИ: Интернет',
           explanation: `
-        < div class= "space-y-6" >
-        <div class="bg-card p-6 rounded-xl border shadow-sm" >
-        <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2" >
-        <span class="text-primary" >⚙️</span> Passiv Präsens (Страдательный залог)
-        </h2>
-        < p class= "text-lg mb-4 text-muted-foreground" >
-        Пассив используется, когда действие важнее того, кто его совершает.Обозначает "что происходит с объектом".
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">⚙️</span> Passiv Präsens (Страдательный залог)
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  Пассив используется, когда действие важнее того, кто его совершает. Обозначает "что происходит с объектом".
                 </p>
 
-        < h3 class= "font-semibold mb-3 text-primary" > Формула: </h3>
-        < div class= "bg-muted p-4 rounded-lg text-center font-mono text-xl mb-6 flex justify-center items-center gap-2" >
-        <span class="text-primary font-bold" > werden < /span> + <span class="text-accent font-bold">Partizip II</span >
-        </div>
+                <h3 class="font-semibold mb-3 text-primary">Формула:</h3>
+                <div class="bg-muted p-4 rounded-lg text-center font-mono text-xl mb-6 flex justify-center items-center gap-2">
+                  <span class="text-primary font-bold">werden</span> + <span class="text-accent font-bold">Partizip II</span>
+                </div>
 
-        < div class= "grid grid-cols-1 md:grid-cols-2 gap-4 mb-6" >
-        <div class="border p-4 rounded-lg bg-green-50/50" >
-        <h4 class="font-bold mb-1 text-green-700" > Aktiv(Действительный) </h4>
-        < p class= "text-sm italic" > "Der Autor <strong>löscht</strong> die Datei." </p>
-        < p class= "text-[10px] text-muted-foreground mt-1" > (Автор удаляет файл)</p>
-        </div>
-        < div class= "border p-4 rounded-lg bg-blue-50/50" >
-        <h4 class="font-bold mb-1 text-blue-700" > Passiv(Страдательный) </h4>
-        < p class= "text-sm italic" > "Die Datei <strong>wird</strong> gelöscht." </p>
-        < p class= "text-[10px] text-muted-foreground mt-1" > (Файл удаляется / Файл удален)</p>
-        </div>
-        </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <div class="border p-4 rounded-lg bg-green-50/50">
+                    <h4 class="font-bold mb-1 text-green-700">Aktiv (Действительный)</h4>
+                    <p class="text-sm italic">"Der Autor <strong>löscht</strong> die Datei."</p>
+                    <p class="text-[10px] text-muted-foreground mt-1">(Автор удаляет файл)</p>
+                  </div>
+                  <div class="border p-4 rounded-lg bg-blue-50/50">
+                    <h4 class="font-bold mb-1 text-blue-700">Passiv (Страдательный)</h4>
+                    <p class="text-sm italic">"Die Datei <strong>wird</strong> gelöscht."</p>
+                    <p class="text-[10px] text-muted-foreground mt-1">(Файл удаляется / Файл удален)</p>
+                  </div>
+                </div>
 
-        < h3 class= "font-semibold mb-3" > Спряжение werden: </h3>
-        < div class= "grid grid-cols-3 gap-2 text-sm text-center mb-6" >
-        <div class="p-2 bg-muted rounded" > ich < strong > werde < /strong></div >
-        <div class="p-2 bg-muted rounded" > du < strong > wirst < /strong></div >
-        <div class="p-2 bg-muted rounded text-primary font-bold" > er / sie / es wird </div>
-        < div class= "p-2 bg-muted rounded" > wir < strong > werden < /strong></div >
-        <div class="p-2 bg-muted rounded" > ihr < strong > werdet < /strong></div >
-        <div class="p-2 bg-muted rounded" > sie < strong > werden < /strong></div >
-        </div>
+                <h3 class="font-semibold mb-3">Спряжение werden:</h3>
+                <div class="grid grid-cols-3 gap-2 text-sm text-center mb-6">
+                  <div class="p-2 bg-muted rounded">ich <strong>werde</strong></div>
+                  <div class="p-2 bg-muted rounded">du <strong>wirst</strong></div>
+                  <div class="p-2 bg-muted rounded text-primary font-bold">er/sie/es wird</div>
+                  <div class="p-2 bg-muted rounded">wir <strong>werden</strong></div>
+                  <div class="p-2 bg-muted rounded">ihr <strong>werdet</strong></div>
+                  <div class="p-2 bg-muted rounded">sie <strong>werden</strong></div>
+                </div>
 
-        < div class= "p-4 bg-primary/10 rounded-lg border border-primary/20" >
-        <p class="text-sm" >💻 <strong>Пример: </strong> "Passwörter <strong>werden</strong > часто < strong > geändert < /strong>." (Пароли часто меняют)</p >
-        </div>
-        </div>
-        </div>
+                <div class="p-4 bg-primary/10 rounded-lg border border-primary/20">
+                  <p class="text-sm">💻 <strong>Пример:</strong> "Passwörter <strong>werden</strong> часто <strong>geändert</strong>." (Пароли часто меняют)</p>
+                </div>
+              </div>
+            </div>
           `,
           vocabulary: [
             {

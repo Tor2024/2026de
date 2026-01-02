@@ -94,55 +94,8 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
     exerciseHistoryRef.current = exerciseHistory;
   }, [exerciseHistory]);
 
+  /* Combined startExerciseCycle to handle actual generation */
   const startExerciseCycle = useCallback(async () => {
-    setIsGenerating(true);
-    setApiError(null);
-    setCurrentStep('loading');
-    setFeedback(null);
-    setUserAnswer('');
-    setExerciseData(null);
-    setIsSubmitting(false);
-    setCurrentExerciseIndex(0);
-
-    // Initial Learning Phase for Topics
-    // If we have a topic, and the learning queue is empty (meaning we haven't started yet),
-    // populate the queue with ALL topic words.
-    // NOTE: We check 'loading' to differentiation between initial load and subsequent cycles?
-    // Actually, we should check if we just finished learning.
-    // We need a way to know if we already did the learning phase for this mount.
-    // Let's rely on state: if learningQueue is empty and we are starting, we should check if we should populate it.
-    // BUT 'startExerciseCycle' is called on retry too.
-    // Simplification: We populate learningQueue ONLY if it's currently empty AND we are in the 'loading' phase of the very first run.
-    // Better: Effect hook manages the entry.
-    // Let's modify logic:
-    // If we have a topic, we ALWAYS start with 'learning' step unless we already passed it.
-    // But 'startExerciseCycle' resets everything.
-    // We need a ref to track if learning is done for this session.
-  }, []);
-
-  // Ref to track if we have already initialized for this topic/mount
-  const isInitializedRef = useRef(false);
-
-  // Effect to initialize the cycle
-  useEffect(() => {
-    // If we are already initialized or missing data, do nothing
-    if (isInitializedRef.current || !topic) return;
-
-    if (allWords.length > 0 && !customWords) {
-      // Logic for Topics: Check if we need to do learning
-      // We assume every new topic mount needs learning phase first
-      setLearningQueue(allWords.map(w => w as VocabularyWord));
-      setCurrentStep('learning');
-      setIsGenerating(false);
-      isInitializedRef.current = true;
-    } else {
-      // Logic for Custom Words OR Fallback: Start standard cycle
-      standardCycleStart();
-      isInitializedRef.current = true;
-    }
-  }, [topic, allWords, customWords]);
-
-  const standardCycleStart = useCallback(async () => {
     setIsGenerating(true);
     setApiError(null);
     setCurrentStep('loading');
@@ -156,20 +109,10 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
       if (customWords && customWords.length > 0) {
         const exercises: Exercise[] = customWords.map(cw => {
           const rand = Math.random();
-          // Distribute types: 
-          // 40% Translation (RU -> DE)
-          // 30% Multiple Choice (DE -> RU)
-          // 30% Sentence Construction (Free text)
-
-          // Strategy for options: Pick 3 random distractors from the SAME folder
-          // FILTER: Avoid confusing synonyms. Remove words where Russian translation overlaps significantly.
-
           const targetTranslationTokens = cw.word.russian.toLowerCase().split(/[,;]/).map(s => s.trim());
 
           const validDistractors = customWords.filter(w => {
             if (w.word.german === cw.word.german) return false;
-
-            // Check for overlap in Russian translation
             const distractorTokens = w.word.russian.toLowerCase().split(/[,;]/).map(s => s.trim());
             const hasOverlap = targetTranslationTokens.some(tToken =>
               distractorTokens.some(dToken =>
@@ -185,12 +128,7 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
             .sort(() => 0.5 - Math.random())
             .slice(0, 3);
 
-          // Ensure 3 distractors by padding with placeholders if not enough valid words
           while (distractors.length < 3) {
-            // Fallback to purely random strings or punctuation to avoid false learning,
-            // or try to fetch from a hardcoded list of common distinct words if we had one.
-            // For now, "..." is acceptable as it forces the user to pick the only real word if mostly empty.
-            // Better: Use a simple distinct fallback pool if we have space, but let's stick to simple padding.
             distractors.push("...");
           }
           const options = [...distractors, cw.word.german].sort(() => 0.5 - Math.random());
@@ -211,18 +149,15 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
               correctAnswer: cw.word.german
             } as Exercise;
           } else {
-            const hasContext = !!cw.context;
-
             return {
               id: `custom-free-${cw.id}`,
               type: 'free-text-sentence',
               question: `Напишите предложение на немецком со словом: ${cw.word.german}`,
-              correctAnswer: cw.context || cw.word.german // Reference for AI checking
+              correctAnswer: cw.context || cw.word.german
             } as Exercise;
           }
         });
 
-        // Shuffle the sequence of exercises
         for (let i = exercises.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [exercises[i], exercises[j]] = [exercises[j], exercises[i]];
@@ -237,6 +172,8 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
       }
 
       if (!topic) {
+        // If no topic and no custom words, we can't do anything.
+        // This might happen if data is loading.
         throw new Error("No topic provided for standard exercise generation");
       }
 
@@ -244,7 +181,6 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
       const unknownWords = allWords.filter(word => !isKnown(word.german));
       const vocabularyToUse = unknownWords.length > 0 ? unknownWords : [];
 
-      // Client-side timeout to prevent infinite loading (20 seconds)
       const timeoutPromise = new Promise<AdaptiveExerciseOutput>((_, reject) =>
         setTimeout(() => reject(new Error("AI_TIMEOUT")), 20000)
       );
@@ -254,7 +190,7 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
           grammarConcept: topic.title,
           userLevel: (currentLevel?.id.toUpperCase() as 'A0' | 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2') || 'A1',
           pastErrors: exerciseHistoryRef.current.filter(e => !e.isCorrect).map(e => e.exercise).join(', '),
-          exerciseHistory: exerciseHistoryRef.current, // Pass current session history from ref
+          exerciseHistory: exerciseHistoryRef.current,
           vocabulary: vocabularyToUse.map(word => ({
             german: word.german,
             russian: word.russian,
@@ -264,12 +200,24 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
         timeoutPromise
       ]);
       setExerciseData(response);
-      setVocabularyExercises((response.vocabularyExercises || []).map((e, idx) => ({ ...e, id: `ai-vocab-${idx}`, type: 'translation', correctAnswer: (e as any).answer || (e as any).correctAnswer } as Exercise)));
+      const vocabEx = (response.vocabularyExercises || []).map((e, idx) => ({ ...e, id: `ai-vocab-${idx}`, type: 'translation', correctAnswer: (e as any).answer || (e as any).correctAnswer } as Exercise));
+      setVocabularyExercises(vocabEx);
       setComprehensionExercises((response.comprehensionExercises || []).map((e, idx) => ({ ...e, id: `ai-comp-${idx}`, type: 'free-text-sentence', correctAnswer: (e as any).answer || (e as any).correctAnswer } as Exercise)));
       setGrammarExercises((response.grammarExercises || []).map((e, idx) => ({ ...e, id: `ai-gram-${idx}`, type: 'fill-in-the-blank', correctAnswer: (e as any).answer || (e as any).correctAnswer } as Exercise)));
       setSentenceConstructionExercises(response.sentenceConstructionExercises || []);
 
-      setCurrentStep('reading');
+      // Priority Sequence: Vocabulary -> Reading -> Comprehension etc.
+      if (vocabEx.length > 0) {
+        setCurrentStep('vocabulary');
+      } else if (response.readingText) {
+        setCurrentStep('reading');
+      } else if (response.comprehensionExercises?.length) {
+        setCurrentStep('comprehension');
+      } else if (response.grammarExercises?.length) {
+        setCurrentStep('grammar');
+      } else {
+        setCurrentStep('explanation');
+      }
     } catch (error: any) {
       console.error("Error starting exercise cycle:", error);
 
@@ -288,11 +236,33 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
     } finally {
       setIsGenerating(false);
     }
-  }, [topic, customWords, allWords, isKnown]);
+  }, [topic, customWords, allWords, isKnown, toast]);
 
+  // Ref to track if we have already initialized for this topic/mount
+  const isInitializedRef = useRef(false);
+
+  // Effect to initialize the cycle
   useEffect(() => {
-    startExerciseCycle();
-  }, [startExerciseCycle]);
+    // If we are already initialized or missing data, do nothing
+    if (isInitializedRef.current || !topic) return;
+
+    if (allWords.length > 0 && !customWords) {
+      // Logic for Topics: Check if we need to do learning
+      // We assume every new topic mount needs learning phase first
+      setLearningQueue(allWords.map(w => w as VocabularyWord));
+      setCurrentStep('learning');
+      setIsGenerating(false);
+      isInitializedRef.current = true;
+    } else {
+      // Logic for Custom Words OR Fallback: Start standard cycle
+      startExerciseCycle();
+      isInitializedRef.current = true;
+    }
+  }, [topic, allWords, customWords]);
+
+
+
+
 
   // Effect to initialize Roleplay when entering the step
   useEffect(() => {
