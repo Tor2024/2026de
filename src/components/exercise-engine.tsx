@@ -11,7 +11,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Progress } from "./ui/progress";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
-import { CheckCircle, Loader2, ThumbsUp, XCircle, BookOpen, BrainCircuit, Pencil, Move, SkipForward, RefreshCw } from "lucide-react";
+import { CheckCircle, Loader2, ThumbsUp, XCircle, BookOpen, BrainCircuit, Pencil, Move, SkipForward, RefreshCw, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "./ui/card";
 import { WordCard } from "./word-card";
@@ -20,6 +20,11 @@ import { useKnownWords } from "@/hooks/use-known-words";
 import { curriculum } from "@/lib/data";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useCurriculumSRS } from "@/hooks/use-curriculum-srs";
+import { SpeakButton } from "./speak-button";
+import { startRoleplay, StartRoleplayOutput } from "@/ai/flows/start-roleplay";
+import { evaluateRoleplay } from "@/ai/flows/evaluate-roleplay";
+import { RoleplayInterface } from "./roleplay-interface";
 
 type Feedback = {
   type: "correct" | "incorrect";
@@ -33,7 +38,7 @@ type SentenceConstructionExercise = {
   correctSentence: string;
 }
 
-type Step = 'learning' | 'vocabulary' | 'reading' | 'comprehension' | 'grammar' | 'sentence-construction' | 'explanation' | 'mastered' | 'loading' | 'error';
+type Step = 'learning' | 'vocabulary' | 'reading' | 'comprehension' | 'grammar' | 'sentence-construction' | 'explanation' | 'roleplay' | 'mastered' | 'loading' | 'error';
 
 
 type ExerciseHistoryItem = {
@@ -55,9 +60,11 @@ type ExerciseEngineProps = {
 
 export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }: ExerciseEngineProps) {
   const [exerciseData, setExerciseData] = useState<AdaptiveExerciseOutput | null>(null);
+  const [roleplayData, setRoleplayData] = useState<StartRoleplayOutput | null>(null);
   const [currentStep, setCurrentStep] = useState<Step>('loading');
   const [userAnswer, setUserAnswer] = useState("");
   const [feedback, setFeedback] = useState<Feedback>(null);
+  const { updateWordSRS } = useCurriculumSRS();
   const { proficiency, setTopicProficiency, getTopicProficiency } = useUserProgress(topic?.id || 'custom');
   const { isKnown, addKnownWord } = useKnownWords();
   const [exerciseHistory, setExerciseHistory] = useState<ExerciseHistoryItem[]>([]);
@@ -182,30 +189,28 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
 
           if (rand < 0.4) {
             return {
+              id: `custom-trans-${cw.id}`,
               type: 'translation',
               question: cw.word.russian,
-              answer: cw.word.german
-            };
+              correctAnswer: cw.word.german
+            } as Exercise;
           } else if (rand < 0.7) {
             return {
+              id: `custom-mc-${cw.id}`,
               type: 'multiple-choice',
               question: `Выберите перевод: ${cw.word.russian}`,
               options: options,
-              answer: cw.word.german
-            };
+              correctAnswer: cw.word.german
+            } as Exercise;
           } else {
-            // Prefer context sentence > generic request
-            // If context exists, use it as the "reference answer" but still ask user to construct a sentence.
-            // We cannot ask to "Translate" the context because we likely don't have the Russian translation of it stored.
-            // So we always fall back to "Write a sentence with word: <german>"
-
             const hasContext = !!cw.context;
 
             return {
+              id: `custom-free-${cw.id}`,
               type: 'free-text-sentence',
               question: `Напишите предложение на немецком со словом: ${cw.word.german}`,
-              answer: cw.context || cw.word.german // Reference for AI checking
-            };
+              correctAnswer: cw.context || cw.word.german // Reference for AI checking
+            } as Exercise;
           }
         });
 
@@ -243,9 +248,9 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
         })),
       });
       setExerciseData(response);
-      setVocabularyExercises((response.vocabularyExercises || []).map(e => ({ ...e, type: 'translation' } as Exercise)));
-      setComprehensionExercises((response.comprehensionExercises || []).map(e => ({ ...e, type: 'free-text-sentence' } as Exercise)));
-      setGrammarExercises((response.grammarExercises || []).map(e => ({ ...e, type: 'fill-in-the-blank' } as Exercise)));
+      setVocabularyExercises((response.vocabularyExercises || []).map((e, idx) => ({ ...e, id: `ai-vocab-${idx}`, type: 'translation', correctAnswer: (e as any).answer || (e as any).correctAnswer } as Exercise)));
+      setComprehensionExercises((response.comprehensionExercises || []).map((e, idx) => ({ ...e, id: `ai-comp-${idx}`, type: 'free-text-sentence', correctAnswer: (e as any).answer || (e as any).correctAnswer } as Exercise)));
+      setGrammarExercises((response.grammarExercises || []).map((e, idx) => ({ ...e, id: `ai-gram-${idx}`, type: 'fill-in-the-blank', correctAnswer: (e as any).answer || (e as any).correctAnswer } as Exercise)));
       setSentenceConstructionExercises(response.sentenceConstructionExercises || []);
 
       setCurrentStep('reading');
@@ -270,6 +275,32 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
     startExerciseCycle();
   }, [startExerciseCycle]);
 
+  // Effect to initialize Roleplay when entering the step
+  useEffect(() => {
+    if (currentStep === 'roleplay' && !roleplayData && !isGenerating && topic) {
+      const initRoleplay = async () => {
+        setIsGenerating(true);
+        try {
+          const currentLevelId = curriculum.levels.find(level => level.topics.some(t => t.id === topic.id))?.id || 'A1';
+
+          const data = await startRoleplay({
+            topicTitle: topic.title,
+            userLevel: currentLevelId.toUpperCase() as any,
+            vocabulary: allWords.map(w => w.german)
+          });
+          setRoleplayData(data);
+        } catch (e) {
+          console.error(e);
+          setApiError("Failed to start roleplay. Please try again.");
+          setCurrentStep('error');
+        } finally {
+          setIsGenerating(false);
+        }
+      };
+      initRoleplay();
+    }
+  }, [currentStep, roleplayData, topic, isGenerating, allWords]);
+
 
   const steps: { id: Step, name: string, icon: React.ElementType }[] = useMemo(() => [
     { id: 'vocabulary', name: 'Словарь', icon: BookOpen },
@@ -278,6 +309,7 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
     { id: 'grammar', name: 'Грамматика', icon: Pencil },
     { id: 'sentence-construction', name: 'Построение фраз', icon: Move },
     { id: 'explanation', name: 'Объяснение', icon: BookOpen },
+    { id: 'roleplay', name: 'Roleplay', icon: CheckCircle },
   ], []);
 
   const currentStepIndex = useMemo(() => steps.findIndex(s => s.id === currentStep), [steps, currentStep]);
@@ -313,7 +345,7 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
     setCurrentExerciseIndex(0);
 
     // Define the sequence
-    const stepOrder: Step[] = ['vocabulary', 'reading', 'comprehension', 'grammar', 'sentence-construction', 'explanation', 'mastered'];
+    const stepOrder: Step[] = ['vocabulary', 'reading', 'comprehension', 'grammar', 'sentence-construction', 'explanation', 'roleplay', 'mastered'];
     const currentOrderIdx = stepOrder.indexOf(currentStep);
 
     for (let i = currentOrderIdx + 1; i < stepOrder.length; i++) {
@@ -326,6 +358,7 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
       else if (nextStep === 'grammar' && grammarExercises.length > 0) hasContent = true;
       else if (nextStep === 'sentence-construction' && sentenceConstructionExercises.length > 0) hasContent = true;
       else if (nextStep === 'explanation' && exerciseData?.explanation) hasContent = true;
+      else if (nextStep === 'roleplay' && topic) hasContent = true; // Review: Always attempt roleplay if topic exists?
       else if (nextStep === 'mastered') hasContent = true; // Always valid end
 
       if (hasContent) {
@@ -362,7 +395,7 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
     }
 
     const question = 'words' in currentExercise ? currentExercise.words.join(' / ') : currentExercise.question;
-    const correctAnswer = 'correctSentence' in currentExercise ? currentExercise.correctSentence : currentExercise.answer;
+    const correctAnswer = 'correctSentence' in currentExercise ? currentExercise.correctSentence : currentExercise.correctAnswer;
 
     try {
       let verification;
@@ -412,49 +445,27 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
         }
       }
 
-      if (isCorrect && currentStep === 'vocabulary') {
-        // Standard Topic Mode: Mark word as known if correct
-        if (allWords) {
+      const quality = isCorrect ? 5 : 0;
+
+      if (currentStep === 'vocabulary') {
+        if (!customWords && allWords) {
           const wordObj = allWords.find(w => w.russian === question);
-          if (wordObj && !customWords) {
-            addKnownWord(wordObj.german);
+          if (wordObj) {
+            if (isCorrect) addKnownWord(wordObj.german);
+            updateWordSRS(wordObj.german, quality);
           }
         }
 
-        // Custom Mode: Update SM-2 State
         if (customWords && onWordUpdate) {
-          // Find logic needs to be robust for mixed exercise types
-          // Question could be Russian (Translation) or German (Choice/Sentence)
-          // It's safer to find by ID if we had it, but we map from UserVocabularyWord.
-          // Let's refactor mapping to include ID or handle lookup better.
-          // For now, reverse lookup:
           const matchingWord = customWords.find(cw =>
-            cw.word.russian === question || // Translation Question
-            cw.word.russian === currentExercise.question.split(': ')[1] || // Multiple Choice "Выберите перевод: ..."
-            cw.word.german === correctAnswer // General
+            cw.word.russian === question ||
+            cw.word.german === correctAnswer
           );
 
           if (matchingWord) {
-            // Grade: 5 for correct, 0 for incorrect (simplification)
-            // If we had more nuance (e.g. typos), we could use 3 or 4.
-            // verification.isCorrect is boolean.
-            const quality = 5;
-            // Note: If incorrect, this block isn't reached because of 'if (isCorrect)' above.
-            // We need to handle incorrect updates                 // updateSM2State(quality, previousState)
             const nextState = updateSM2State(quality, matchingWord.sm2State);
             onWordUpdate(matchingWord.id, nextState);
           }
-        }
-      } else if (!isCorrect && customWords && onWordUpdate && currentStep === 'vocabulary') {
-        // Same look up logic for incorrect
-        const matchingWord = customWords.find(cw =>
-          cw.word.russian === question ||
-          cw.word.german === correctAnswer
-        );
-        if (matchingWord) {
-          const quality = 0;
-          const nextState = updateSM2State(quality, matchingWord.sm2State);
-          onWordUpdate(matchingWord.id, nextState);
         }
       }
 
@@ -482,49 +493,12 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
     }
 
     if (currentStep === 'vocabulary') {
-      // Should rely on proceedToNextExercise usually, but here handleGlobalContinue is used for explicit "Next Phase" buttons?
-      // Actually 'vocabulary' doesn't use GlobalContinue unless we add a button.
-      // The 'Continue' button is usually for Reading/Explanation.
-      // But if we are in 'vocabulary' and feedback is cleared, we should proceed?
-      // Standard flow: Input -> Submit -> Feedback -> Click Continue -> proceedToNextExercise
       proceedToNextExercise();
     } else if (currentStep === 'reading') {
-      const next = exerciseData?.comprehensionExercises?.length ? 'comprehension' : 'grammar'; // Simple fallback
       proceedToNextExercise();
     } else if (currentStep === 'explanation') {
-      setIsGenerating(true);
-      try {
-        if (!topic && !customWords) return;
-
-        // If Custom Words, we just finish
-        if (customWords) {
-          setCurrentStep('mastered');
-          return;
-        }
-
-        if (topic) {
-          const isMastered = getTopicProficiency(topic.id) >= 100;
-          const feedbackResponse = await generateFeedback({
-            topicTitle: topic.title,
-            exerciseHistory: exerciseHistory.map(h => ({ exercise: h.exercise, correct: h.isCorrect })),
-          });
-          setFinalFeedback(feedbackResponse.feedback);
-
-          if (isMastered) {
-            setCurrentStep('mastered');
-            onMastered();
-            setExerciseHistory([]);
-          } else {
-            startExerciseCycle();
-          }
-        }
-      } catch (error) {
-        console.error("Error in post-cycle phase:", error);
-        setApiError("Не удалось получить итоговый отзыв. Вы можете начать новый цикл вручную.");
-        setCurrentStep('error');
-      } finally {
-        setIsGenerating(false);
-      }
+      // Logic to move to Roleplay or Mastered
+      proceedToNextExercise();
     }
   };
 
@@ -547,12 +521,12 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
     if (currentStep === 'loading' && !apiError) return null;
 
     if (apiError) {
-      let retryAction;
-      if (currentStep === 'error' && !finalFeedback) { // Error during exercise generation
+      let retryAction: () => void;
+      if (currentStep === 'error' && !finalFeedback) {
         retryAction = startExerciseCycle;
-      } else if (currentStep === 'error' && finalFeedback) { // Error during feedback generation
+      } else if (currentStep === 'error' && finalFeedback) {
         retryAction = handleGlobalContinue;
-      } else { // Error during answer verification
+      } else {
         retryAction = () => handleSubmitExercise();
       }
 
@@ -564,60 +538,84 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
           <CardContent>
             <p>{apiError}</p>
             <Button onClick={retryAction} className="mt-4" disabled={isSubmitting || isGenerating}>
-              {(isSubmitting || isGenerating) ? <Loader2 className="animate-spin" /> : <RefreshCw />}
+              {(isSubmitting || isGenerating) ? <Loader2 className="animate-spin mr-2" /> : <RefreshCw className="mr-2 h-4 w-4" />}
               Повторить запрос
             </Button>
           </CardContent>
         </Card>
-      )
+      );
     }
 
-
     switch (currentStep) {
-      case 'reading':
+      case 'reading': {
         if (!exerciseData) return null;
         return (
-          <Card>
-            <CardHeader><CardTitle>Прочитайте текст</CardTitle></CardHeader>
+          <Card className="shadow-lg">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle>Прочитайте текст</CardTitle>
+              <SpeakButton text={exerciseData.readingText} variant="outline" size="sm" showText />
+            </CardHeader>
             <CardContent>
               <p className="text-lg leading-relaxed">{exerciseData.readingText}</p>
-              <div className="mt-4 flex gap-4">
-                <Button onClick={handleGlobalContinue}>Продолжить</Button>
+              <div className="mt-8 flex gap-4">
+                <Button onClick={handleGlobalContinue} className="w-full sm:w-auto">Продолжить</Button>
               </div>
             </CardContent>
           </Card>
         );
+      }
 
-      case 'learning':
-        if (!learningQueue || learningQueue.length === 0) return null; // Should not happen if step is learning
+      case 'roleplay': {
+        if (!roleplayData) {
+          return (
+            <div className="flex flex-col items-center justify-center h-64 space-y-4">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="text-muted-foreground animate-pulse">Готовим сцену для диалога...</p>
+              <p className="text-xs text-muted-foreground">AI вживается в роль...</p>
+            </div>
+          );
+        }
+
+        const currentLevelId = topic ? curriculum.levels.find(level => level.topics.some(t => t.id === topic.id))?.id || 'A1' : 'A1';
+
+        return (
+          <RoleplayInterface
+            scenario={roleplayData.scenario}
+            aiRole={roleplayData.aiRole}
+            userRole={roleplayData.userRole}
+            initialMessage={roleplayData.initialMessage}
+            objectives={roleplayData.objectives}
+            userLevel={currentLevelId}
+            onSendMessage={(history, msg) => evaluateRoleplay({
+              history,
+              userLevel: currentLevelId.toUpperCase() as any,
+              objectives: roleplayData.objectives,
+              scenarioContext: roleplayData.scenario
+            })}
+            onComplete={() => {
+              // After roleplay, we are done
+              onMastered();
+              setCurrentStep('mastered');
+              // Note: We skip the explicit 'finalFeedback' generation for now as roleplay gives its own feedback.
+            }}
+          />
+        )
+      }
+
+      case 'learning': {
+        if (!learningQueue || learningQueue.length === 0) return null;
         const learningWord = learningQueue[0];
 
-        // Helper to check answer
         const handleLearningSubmit = (e?: React.FormEvent) => {
           if (e) e.preventDefault();
           if (!userAnswer) return;
-
           const normalize = (s: string) => s.trim().toLowerCase().replace(/[.,!?]/g, '');
           const correct = learningWord.german;
-
-          // Special check for Nouns: must include article?
-          // The data `learningWord.german` usually includes article for nouns?? 
-          // Let's check `types.ts` again or `word-card`.
-          // `VocabularyWord` for Noun has `german` (just word) and `article`.
-          // Wait, `word.german` in `VocabularyWord` interface...
-          // Looking at `types.ts`:
-          // interface Noun { german: string; article: 'der'|'die'|'das' ... }
-          // So `german` is just "Mann", not "der Mann".
-          // But `getGermanDisplay` in `WordCard` combines them.
-          // User Requirement: "nouns MUST be with article".
-
           let correctStats = correct;
           if (learningWord.type === 'noun') {
             correctStats = `${learningWord.article} ${learningWord.german}`;
           }
-
           const isCorrect = normalize(userAnswer) === normalize(correctStats);
-
           if (isCorrect) {
             setLearningFeedback({ type: 'correct', message: `<p><strong>Верно!</strong> ${correctStats}</p>` });
           } else {
@@ -627,23 +625,17 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
 
         const handleLearningMakeNext = () => {
           if (!learningFeedback) return;
-
           if (learningFeedback.type === 'correct') {
-            // Remove from queue
             const newQueue = learningQueue.slice(1);
             setLearningQueue(newQueue);
             if (newQueue.length === 0) {
-              // Done with learning!
               learningDoneRef.current = true;
-              startExerciseCycle(); // Proceed to standard exercises
+              startExerciseCycle();
             }
           } else {
-            // Move to end
             const newQueue = [...learningQueue.slice(1), learningWord];
             setLearningQueue(newQueue);
           }
-
-          // Reset for next card
           setLearningFeedback(null);
           setUserAnswer('');
         };
@@ -651,68 +643,64 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
         return (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-bold">Изучение новых слов</h2>
+              <h2 className="text-xl font-bold font-headline">Изучение новых слов</h2>
               <span className="text-sm text-muted-foreground">Осталось: {learningQueue.length}</span>
             </div>
 
-            {/* Show the card - Back Side (Russian) as Question? 
-                 User requirement: "Interactive training... nouns with article... if error move to end".
-                 Usually this means: Show Russian -> User types German.
-                 So we flip the card to show Russian?
-                 Or we just show a question card?
-                 Let's reuse WordCard but maybe force a "question mode"?
-                 Actually WordCard manages its own flip state.
-                 Maybe we just show the Russian text in a simple Card, and reveal the full WordCard on answer?
-              */}
-
             <Card>
-              <CardHeader><CardTitle>Как это по-немецки?</CardTitle></CardHeader>
+              <CardHeader><CardTitle className="text-center font-headline">Как это по-немецки?</CardTitle></CardHeader>
               <CardContent className="space-y-4">
-                <div className="text-2xl font-bold text-center py-6">{learningWord.russian}</div>
+                <div className="text-3xl font-bold text-center py-6">{learningWord.russian}</div>
 
                 {learningFeedback ? (
                   <div className="animate-in fade-in zoom-in duration-300">
-                    {/* Show the full detailed card to study after answering */}
                     <WordCard word={learningWord} />
-
                     <Alert variant={learningFeedback.type === 'correct' ? 'default' : 'destructive'} className="mt-4">
                       <div className="flex items-center gap-2">
                         {learningFeedback.type === 'correct' ? <CheckCircle className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
                         <div dangerouslySetInnerHTML={{ __html: learningFeedback.message }} />
+                        <SpeakButton text={learningWord.type === 'noun' ? `${learningWord.article} ${learningWord.german}` : learningWord.german} size="sm" variant="ghost" />
                       </div>
                     </Alert>
-
-                    <Button onClick={handleLearningMakeNext} className="w-full mt-4" size="lg">
+                    <Button onClick={handleLearningMakeNext} className="w-full mt-4 h-12 text-lg" size="lg">
                       {learningFeedback.type === 'correct' ? 'Далее' : 'Повторить позже'}
                     </Button>
                   </div>
                 ) : (
                   <form onSubmit={handleLearningSubmit} className="space-y-4">
-                    <Input
-                      autoFocus
-                      placeholder={learningWord.type === 'noun' ? "Существительное с артиклем (der/die/das)..." : "Перевод..."}
-                      value={userAnswer}
-                      onChange={e => setUserAnswer(e.target.value)}
-                      className="text-lg text-center"
-                    />
-                    <Button type="submit" className="w-full" disabled={!userAnswer}>Проверить</Button>
+                    <div className="flex gap-2">
+                      <Input
+                        autoFocus
+                        placeholder={learningWord.type === 'noun' ? "Существительное с артиклем (der/die/das)..." : "Перевод..."}
+                        value={userAnswer}
+                        onChange={e => setUserAnswer(e.target.value)}
+                        className="text-lg text-center h-12"
+                      />
+                      <SpeakButton
+                        text={learningWord.type === 'noun' ? `${learningWord.article} ${learningWord.german}` : learningWord.german}
+                        size="lg"
+                        variant="secondary"
+                      />
+                    </div>
+                    <Button type="submit" className="w-full h-12 text-lg" disabled={!userAnswer}>Проверить</Button>
                   </form>
                 )}
               </CardContent>
             </Card>
           </div>
         );
+      }
 
       case 'vocabulary':
       case 'comprehension':
       case 'grammar':
-      case 'sentence-construction':
-        let currentExercisesList: Exercise[] | SentenceConstructionExercise[] | undefined;
+      case 'sentence-construction': {
+        let currentExercisesList: (Exercise | SentenceConstructionExercise)[] = [];
         let title = '';
 
         if (currentStep === 'vocabulary') {
           currentExercisesList = vocabularyExercises;
-          if (currentExercisesList && currentExercisesList.length > 0) {
+          if (currentExercisesList.length > 0) {
             const currentEx = currentExercisesList[currentExerciseIndex] as Exercise;
             if (currentEx.type === 'multiple-choice') title = 'Выберите правильный вариант';
             else if (currentEx.type === 'free-text-sentence') title = 'Составьте предложение';
@@ -729,21 +717,23 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
           title = 'Составьте предложение из слов';
         }
 
-        if (!currentExercisesList || currentExercisesList.length === 0) {
+        if (currentExercisesList.length === 0) {
           return <div className="p-4 text-center">Загрузка упражнения...</div>;
         }
 
         const currentExercise = currentExercisesList[currentExerciseIndex];
 
-        // Handle Sentence Construction Check (Type Guard)
         if (currentStep === 'sentence-construction') {
           const scExercise = currentExercise as SentenceConstructionExercise;
           return (
             <Card>
-              <CardHeader><CardTitle>{title}</CardTitle></CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="font-headline">{title}</CardTitle>
+                <SpeakButton text={scExercise.correctSentence} variant="ghost" size="sm" />
+              </CardHeader>
               <CardContent>
                 <div className="text-lg text-foreground mb-4">
-                  <p className="font-bold tracking-wider">{scExercise.words.join(' / ')}</p>
+                  <p className="font-bold tracking-wider bg-muted/50 p-4 rounded-lg">{scExercise.words.join(' / ')}</p>
                 </div>
                 <form onSubmit={handleSubmitExercise} className="flex flex-col sm:flex-row gap-2">
                   <Input
@@ -751,10 +741,10 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
                     value={userAnswer}
                     onChange={(e) => setUserAnswer(e.target.value)}
                     placeholder="Введите ваше предложение..."
-                    className="flex-grow"
+                    className="flex-grow h-12"
                     disabled={isSubmitting || !!feedback}
                   />
-                  <Button type="submit" disabled={isSubmitting || !userAnswer || !!feedback}>
+                  <Button type="submit" size="lg" disabled={isSubmitting || !userAnswer || !!feedback}>
                     {isSubmitting ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Проверить'}
                   </Button>
                 </form>
@@ -763,25 +753,23 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
           );
         }
 
-        // Handle Standard Exercises (Vocabulary, Grammar, Comprehension)
         const stdExercise = currentExercise as Exercise;
-
         return (
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center">
-                <CardTitle>{title}</CardTitle>
-                <span className="text-sm font-medium text-muted-foreground">
-                  {currentExerciseIndex + 1} / {currentExercisesList.length}
-                </span>
+                <CardTitle className="font-headline">{title}</CardTitle>
+                <div className="flex items-center gap-4">
+                  <SpeakButton text={stdExercise.correctAnswer} variant="ghost" size="sm" />
+                  <span className="text-sm font-medium text-muted-foreground bg-muted px-2 py-1 rounded">
+                    {currentExerciseIndex + 1} / {currentExercisesList.length}
+                  </span>
+                </div>
               </div>
             </CardHeader>
             <CardContent>
               <div className="text-lg text-foreground mb-4">
-                <p className="font-medium bg-muted p-4 rounded-md mb-2">{stdExercise.question}</p>
-                {stdExercise.type === 'translation' && (
-                  <p className="text-sm text-muted-foreground">Введите ответ на немецком языке</p>
-                )}
+                <p className="font-medium bg-muted/30 p-4 rounded-md mb-2">{stdExercise.question}</p>
               </div>
 
               {stdExercise.type === 'multiple-choice' ? (
@@ -790,22 +778,23 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
                     <Button
                       key={idx}
                       variant={userAnswer === option ? (feedback?.type === 'correct' ? "default" : "destructive") : "outline"}
-                      className={`justify-start h-auto py-3 text-lg ${feedback && option === stdExercise.answer ? "border-green-500 bg-green-50 text-green-700" : ""}`}
+                      className={`justify-start h-auto py-4 px-6 text-lg transition-all ${feedback && option === stdExercise.correctAnswer ? "border-green-500 bg-green-50 text-green-700" : ""}`}
                       onClick={() => {
                         if (isSubmitting || feedback) return;
                         setUserAnswer(option);
-                        // For multiple choice, we rely on user clicking "Check" to confirm, 
-                        // avoiding accidental misclicks.
                       }}
                     >
-                      {option}
+                      <div className="flex justify-between items-center w-full">
+                        <span>{option}</span>
+                        <SpeakButton text={option} size="sm" variant="ghost" className="h-8 w-8 ml-2" />
+                      </div>
                     </Button>
                   ))}
                   <div className="mt-4">
                     <Button
                       onClick={() => handleSubmitExercise()}
                       disabled={!userAnswer || isSubmitting || !!feedback}
-                      className="w-full"
+                      className="w-full h-12 text-lg"
                     >
                       {isSubmitting ? <Loader2 className="animate-spin mr-2" /> : 'Проверить'}
                     </Button>
@@ -816,13 +805,13 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
                   {stdExercise.type === 'free-text-sentence' ? (
                     <div className="space-y-2">
                       <textarea
-                        className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                        className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-lg ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                         placeholder="Напишите ваше предложение..."
                         value={userAnswer}
                         onChange={(e) => setUserAnswer(e.target.value)}
                         disabled={isSubmitting || !!feedback}
                       />
-                      <p className="text-xs text-muted-foreground">AI проверит грамматику и смысл вашего предложения.</p>
+                      <p className="text-xs text-muted-foreground italic">AI проверит грамматику и смысл вашего предложения.</p>
                     </div>
                   ) : (
                     <Input
@@ -831,31 +820,35 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
                       value={userAnswer}
                       onChange={(e) => setUserAnswer(e.target.value)}
                       disabled={isSubmitting || !!feedback}
-                      className="text-lg"
+                      className="text-xl h-14 text-center"
                     />
                   )}
 
-                  <Button type="submit" className="w-full" disabled={!userAnswer || isSubmitting || !!feedback}>
-                    {isSubmitting ? <Loader2 className="animate-spin mr-2" /> : <div className="flex items-center"><CheckCircle className="mr-2 h-4 w-4" /> Проверить</div>}
+                  <Button type="submit" className="w-full h-14 text-xl font-headline" disabled={!userAnswer || isSubmitting || !!feedback}>
+                    {isSubmitting ? <Loader2 className="animate-spin mr-2" /> : <div className="flex items-center"><CheckCircle className="mr-2 h-6 w-6" /> Проверить</div>}
                   </Button>
                 </form>
               )}
             </CardContent>
           </Card>
         );
-      case 'explanation':
+      }
+
+      case 'explanation': {
         if (!exerciseData) return null;
         return (
           <Card>
-            <CardHeader><CardTitle>Объяснение правила</CardTitle></CardHeader>
+            <CardHeader><CardTitle className="font-headline">Объяснение правила</CardTitle></CardHeader>
             <CardContent>
               <div className="prose prose-lg max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: exerciseData.explanation }} />
-              <Button onClick={handleGlobalContinue} className="mt-4" disabled={isGenerating}>
+              <Button onClick={handleGlobalContinue} className="mt-6 h-12 px-8" disabled={isGenerating}>
                 {isGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Следующий цикл'}
               </Button>
             </CardContent>
           </Card>
         );
+      }
+
       default:
         return null;
     }
@@ -863,42 +856,47 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
 
   if ((currentStep === 'loading' || isGenerating) && !apiError) {
     return (
-      <div className="flex flex-col items-center justify-center text-center p-8">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" />
-        <p className="mt-4 text-muted-foreground">ИИ-тренер готовит ваше задание...</p>
+      <div className="flex flex-col items-center justify-center text-center p-12 min-h-[300px]">
+        <Loader2 className="h-16 w-16 animate-spin text-primary mb-6" />
+        <p className="text-xl font-medium text-muted-foreground animate-pulse">ИИ-тренер готовит ваши задания...</p>
       </div>
     );
   }
 
   if (currentStep === 'mastered') {
     return (
-      <Card className="bg-gradient-to-br from-primary/10 to-transparent">
-        <CardHeader>
-          <CardTitle className="text-center">
-            <ThumbsUp className="mx-auto h-16 w-16 text-green-500 bg-green-100 rounded-full p-3 mb-4" />
-            <div className="text-2xl font-bold text-foreground font-headline">Тема освоена!</div>
+      <Card className="bg-gradient-to-br from-primary/10 to-transparent border-primary/20 shadow-2xl overflow-hidden relative">
+        <div className="absolute top-0 right-0 p-8 opacity-10">
+          <ThumbsUp className="h-32 w-32 text-primary" />
+        </div>
+        <CardHeader className="pt-12">
+          <CardTitle className="text-center relative z-10">
+            <div className="mx-auto bg-green-100 dark:bg-green-900/40 rounded-full p-4 w-24 h-24 flex items-center justify-center mb-6 shadow-xl">
+              <ThumbsUp className="h-12 w-12 text-green-600 dark:text-green-400" />
+            </div>
+            <div className="text-3xl font-black text-foreground font-headline uppercase tracking-tighter">Тема освоена!</div>
           </CardTitle>
-          <CardDescription className="text-center">Отличная работа! Вы продемонстрировали уверенное понимание этой темы.</CardDescription>
+          <CardDescription className="text-center text-lg max-w-md mx-auto">Отличная работа! Вы продемонстрировали уверенное понимание темы.</CardDescription>
         </CardHeader>
-        <CardContent className="text-center">
+        <CardContent className="text-center pb-12">
           {finalFeedback && (
-            <Alert className="mt-4 text-left">
-              <BrainCircuit className="h-4 w-4" />
-              <AlertTitle>Персональный отзыв от AI-тренера</AlertTitle>
+            <Alert className="mt-8 text-left border-primary/20 bg-primary/5 max-w-2xl mx-auto">
+              <BrainCircuit className="h-5 w-5 text-primary" />
+              <AlertTitle className="font-bold text-primary mb-2">Персональный отзыв от AI-тренера</AlertTitle>
               <AlertDescription className="prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: finalFeedback }} />
             </Alert>
           )}
         </CardContent>
-        <CardFooter>
+        <CardFooter className="bg-muted/30 p-8">
           {nextTopicUrl ? (
-            <Button asChild className="w-full">
+            <Button asChild className="w-full h-14 text-lg font-bold shadow-lg" size="lg">
               <Link href={nextTopicUrl}>
-                Перейти к следующей теме <SkipForward className="ml-2 h-4 w-4" />
+                Перейти к следующей теме <SkipForward className="ml-2 h-5 w-5" />
               </Link>
             </Button>
           ) : (
-            <Button onClick={onMastered} className="w-full">
-              Завершить тренировку <CheckCircle className="ml-2 h-4 w-4" />
+            <Button onClick={onMastered} className="w-full h-14 text-lg font-bold" size="lg">
+              Завершить тренировку <CheckCircle className="ml-2 h-5 w-5" />
             </Button>
           )}
         </CardFooter>
@@ -909,42 +907,44 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
   const currentProficiency = getTopicProficiency(topic?.id || 'custom');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <ol className="flex items-center w-full">
+        <ol className="flex items-center w-full px-2">
           {steps.map((step, index) => (
             <li key={step.id} className={`flex w-full items-center ${index < steps.length - 1 ? "after:content-[''] after:w-full after:h-1 after:border-b after:border-4 after:inline-block" : ""} ${index <= currentStepIndex ? 'text-primary after:border-primary' : 'text-muted-foreground after:border-muted'}`}>
-              <span className={`flex items-center justify-center w-10 h-10 rounded-full lg:h-12 lg:w-12 shrink-0 ${index <= currentStepIndex ? 'bg-primary text-primary-foreground' : 'bg-muted'}`}>
-                <step.icon className="w-5 h-5 lg:w-6 lg:h-6" />
+              <span className={`flex items-center justify-center w-8 h-8 rounded-full lg:h-10 lg:w-10 shrink-0 ${index <= currentStepIndex ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20' : 'bg-muted'}`}>
+                <step.icon className="w-4 h-4 lg:w-5 lg:h-5" />
               </span>
             </li>
           ))}
         </ol>
       </div>
 
-      <div>
-        <div className="flex justify-between items-center mb-2">
-          <label htmlFor="mastery" className="text-sm font-medium text-muted-foreground">Уровень освоения</label>
-          <span className="text-sm font-bold text-primary">{topic ? currentProficiency : 'N/A'}%</span>
+      <div className="bg-card p-4 rounded-xl border shadow-sm">
+        <div className="flex justify-between items-center mb-3">
+          <label htmlFor="mastery" className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Прогресс освоения</label>
+          <span className="text-sm font-black text-primary">{topic ? currentProficiency : 'N/A'}%</span>
         </div>
-        <Progress value={currentProficiency} id="mastery" />
+        <Progress value={currentProficiency} id="mastery" className="h-3" />
       </div>
 
-      {renderContent()}
+      <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+        {renderContent()}
+      </div>
 
       {feedback && (
-        <Alert variant={feedback.type === 'incorrect' ? 'destructive' : 'default'} className="mt-4">
-          <div className="flex justify-between items-start">
+        <Alert variant={feedback.type === 'incorrect' ? 'destructive' : 'default'} className="mt-6 border-2 shadow-2xl animate-in zoom-in-95 duration-200">
+          <div className="flex justify-between items-start gap-4 p-2">
             <div className="flex-grow">
-              <div className="flex items-center gap-2">
-                {feedback.type === 'correct' ? <CheckCircle className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
-                <AlertTitle className="font-headline">
-                  {feedback.type === 'correct' ? 'Правильно!' : 'Обратите внимание'}
+              <div className="flex items-center gap-2 mb-2">
+                {feedback.type === 'correct' ? <CheckCircle className="h-6 w-6 text-green-500" /> : <XCircle className="h-6 w-6 text-destructive" />}
+                <AlertTitle className="text-xl font-black font-headline m-0">
+                  {feedback.type === 'correct' ? 'ВЕРНО!' : 'ОБРАТИТЕ ВНИМАНИЕ'}
                 </AlertTitle>
               </div>
-              <AlertDescription className="prose prose-sm max-w-none dark:prose-invert pl-6" dangerouslySetInnerHTML={{ __html: feedback.message }} />
+              <AlertDescription className="prose prose-sm max-w-none dark:prose-invert text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: feedback.message }} />
             </div>
-            <Button onClick={handleGlobalContinue} size="sm">Продолжить</Button>
+            <Button onClick={handleGlobalContinue} size="lg" className="shrink-0 shadow-lg font-bold">Далее <ArrowRight className="ml-2 h-4 w-4" /></Button>
           </div>
         </Alert>
       )}

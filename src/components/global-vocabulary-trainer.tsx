@@ -22,6 +22,8 @@ import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 import { Progress } from './ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { useKnownWords } from '@/hooks/use-known-words';
+import { SpeakButton } from '@/components/speak-button';
+
 
 type VocabStep = 'learning' | 'practicing' | 'finished';
 
@@ -70,23 +72,23 @@ export function GlobalVocabularyTrainer({ words }: { words: VocabularyWord[] }) 
       // After removing, the index might be out of bounds if it was the last element
       if (vocabIndex >= shuffledVocabulary.length - 1) {
         if (shuffledVocabulary.length - 1 > 0) {
-            // This was the last word, but there are others. Go to the start.
-            setVocabIndex(0);
+          // This was the last word, but there are others. Go to the start.
+          setVocabIndex(0);
         } else {
-            // No words left.
-            setStep('practicing');
+          // No words left.
+          setStep('practicing');
         }
       }
       // Otherwise, the index is now pointing to the next element, so we don't need to change it.
-      
+
     } else {
-       if (vocabIndex < shuffledVocabulary.length - 1) {
-          setVocabIndex(prev => prev + 1);
-        } else {
-          setVocabIndex(0);
-          setIncorrectVocab([]);
-          setStep('practicing');
-        }
+      if (vocabIndex < shuffledVocabulary.length - 1) {
+        setVocabIndex(prev => prev + 1);
+      } else {
+        setVocabIndex(0);
+        setIncorrectVocab([]);
+        setStep('practicing');
+      }
     }
   }
 
@@ -164,26 +166,26 @@ export function GlobalVocabularyTrainer({ words }: { words: VocabularyWord[] }) 
 
   const renderContent = () => {
     if (wordsForTraining.length === 0 || step === 'finished') {
-        return (
-            <div className="text-center p-8">
-                <BrainCircuit className="mx-auto h-16 w-16 text-primary bg-primary/10 rounded-full p-3 mb-4" />
-                <h3 className="text-2xl font-bold text-foreground font-headline">Тренажер слов</h3>
-                <p className="mt-2 text-muted-foreground mb-6">
-                    {words.length === 0 
-                        ? "Вы еще не начали ни одного урока. Начните обучение, чтобы добавить слова для повторения." 
-                        : "Отличная работа! Все слова повторены или отмечены как известные. Возвращайтесь позже, чтобы закрепить знания."}
-                </p>
-                <Button onClick={() => setIsOpen(false)}>Закрыть</Button>
-            </div>
-        )
+      return (
+        <div className="text-center p-8">
+          <BrainCircuit className="mx-auto h-16 w-16 text-primary bg-primary/10 rounded-full p-3 mb-4" />
+          <h3 className="text-2xl font-bold text-foreground font-headline">Тренажер слов</h3>
+          <p className="mt-2 text-muted-foreground mb-6">
+            {words.length === 0
+              ? "Вы еще не начали ни одного урока. Начните обучение, чтобы добавить слова для повторения."
+              : "Отличная работа! Все слова повторены или отмечены как известные. Возвращайтесь позже, чтобы закрепить знания."}
+          </p>
+          <Button onClick={() => setIsOpen(false)}>Закрыть</Button>
+        </div>
+      )
     }
-    
-    if (!currentVocabWord && step !== 'finished') {
-        return (
-            <div className="flex justify-center items-center p-8">
-                <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            </div>
-        )
+
+    if (!currentVocabWord) {
+      return (
+        <div className="flex justify-center items-center p-8">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      )
     }
 
     if (step === 'learning') {
@@ -192,7 +194,7 @@ export function GlobalVocabularyTrainer({ words }: { words: VocabularyWord[] }) 
           <DialogHeader>
             <DialogTitle>Изучение слов</DialogTitle>
             <DialogDescription>
-                Пролистайте карточки, чтобы освежить слова в памяти.
+              Пролистайте карточки, чтобы освежить слова в памяти.
             </DialogDescription>
           </DialogHeader>
           <div className="my-4">
@@ -200,20 +202,20 @@ export function GlobalVocabularyTrainer({ words }: { words: VocabularyWord[] }) 
           </div>
           {currentVocabWord && (
             <>
-            <div className="px-6 pb-2">
+              <div className="px-6 pb-2">
                 <Button variant="ghost" className="w-full text-green-600 hover:bg-green-100 hover:text-green-700" onClick={handleKnowWord}>
-                    <Check className="mr-2 h-4 w-4"/> Я знаю это слово
+                  <Check className="mr-2 h-4 w-4" /> Я знаю это слово
                 </Button>
-            </div>
-            <DialogFooter className="justify-between sm:justify-between">
+              </div>
+              <DialogFooter className="justify-between sm:justify-between">
                 <Button variant="outline" onClick={handlePrev} disabled={vocabIndex === 0}>
-                <ArrowLeft className="mr-2 h-4 w-4" /> Назад
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Назад
                 </Button>
                 <p className="text-sm text-muted-foreground">{vocabIndex + 1} / {shuffledVocabulary.length}</p>
                 <Button onClick={handleNext}>
-                {vocabIndex === shuffledVocabulary.length - 1 ? 'К практике' : 'Далее'} <ArrowRight className="ml-2 h-4 w-4" />
+                  {vocabIndex === shuffledVocabulary.length - 1 ? 'К практике' : 'Далее'} <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-            </DialogFooter>
+              </DialogFooter>
             </>
           )}
         </DialogContent>
@@ -221,65 +223,72 @@ export function GlobalVocabularyTrainer({ words }: { words: VocabularyWord[] }) 
     }
 
     if (step === 'practicing') {
-        if(!currentVocabWord) {
-            return (
-                <div className="text-center p-8">
-                    <h3 className="text-2xl font-bold">Практика завершена</h3>
-                    <p className="mt-2 text-muted-foreground mb-6">Вы прошли все слова в этом цикле.</p>
-                    <Button onClick={() => setStep('finished')}>Завершить</Button>
-                </div>
-            )
-        }
+      if (!currentVocabWord) {
+        return (
+          <div className="text-center p-8">
+            <h3 className="text-2xl font-bold">Практика завершена</h3>
+            <p className="mt-2 text-muted-foreground mb-6">Вы прошли все слова в этом цикле.</p>
+            <Button onClick={() => setStep('finished')}>Завершить</Button>
+          </div>
+        )
+      }
       return (
         <DialogContent className="max-w-xl">
-            <DialogHeader>
-                <DialogTitle className="text-center text-2xl">Напишите перевод (с артиклем):</DialogTitle>
-                <DialogDescription className="text-center text-4xl font-bold text-primary">{currentVocabWord.russian}</DialogDescription>
-            </DialogHeader>
-            <div className="my-4">
-                <form onSubmit={handleVocabCheck} className="flex flex-col gap-4">
-                    <div className="flex gap-2 items-center">
-                        <Input
-                            type="text"
-                            placeholder="Ответ на немецком..."
-                            value={userAnswer}
-                            onChange={(e) => setUserAnswer(e.target.value)}
-                            disabled={!!vocabFeedback || isSubmitting}
-                            className="text-lg h-12"
-                            autoCapitalize="none"
-                            autoCorrect="off"
-                        />
-                        <Button type="submit" size="lg" disabled={!!vocabFeedback || !userAnswer.trim() || isSubmitting}>
-                            {isSubmitting ? <Loader2 className="animate-spin" /> : 'Проверить'}
-                        </Button>
+          <DialogHeader>
+            <DialogTitle className="text-center text-2xl">Напишите перевод (с артиклем):</DialogTitle>
+            <DialogDescription className="text-center text-4xl font-bold text-primary">{currentVocabWord.russian}</DialogDescription>
+          </DialogHeader>
+          <div className="my-4">
+            <form onSubmit={handleVocabCheck} className="flex flex-col gap-4">
+              <div className="flex gap-2 items-center">
+                <Input
+                  type="text"
+                  placeholder="Ответ на немецком..."
+                  value={userAnswer}
+                  onChange={(e) => setUserAnswer(e.target.value)}
+                  disabled={!!vocabFeedback || isSubmitting}
+                  className="text-lg h-12"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                />
+                <Button type="submit" size="lg" disabled={!!vocabFeedback || !userAnswer.trim() || isSubmitting}>
+                  {isSubmitting ? <Loader2 className="animate-spin" /> : 'Проверить'}
+                </Button>
+              </div>
+            </form>
+            {apiError &&
+              <Alert variant="destructive" className="mt-4">
+                <XCircle className="h-4 w-4" />
+                <AlertTitle>Ошибка</AlertTitle>
+                <AlertDescription>
+                  {apiError}
+                  <Button onClick={() => handleVocabCheck()} variant="link" className="p-0 h-auto ml-2">
+                    <RefreshCw className="mr-2 h-4 w-4" /> Повторить
+                  </Button>
+                </AlertDescription>
+              </Alert>
+            }
+            {vocabFeedback && (
+              <>
+                <Alert variant={vocabFeedback.type === 'correct' ? 'default' : 'destructive'} className="mt-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex-shrink-0">
+                      {vocabFeedback.type === 'correct' ? <CheckCircle className="h-6 w-6" /> : <XCircle className="h-6 w-6" />}
                     </div>
-                </form>
-                {apiError && 
-                    <Alert variant="destructive" className="mt-4">
-                        <XCircle className="h-4 w-4" />
-                        <AlertTitle>Ошибка</AlertTitle>
-                        <AlertDescription>
-                            {apiError}
-                            <Button onClick={() => handleVocabCheck()} variant="link" className="p-0 h-auto ml-2">
-                                <RefreshCw className="mr-2 h-4 w-4" /> Повторить
-                            </Button>
-                        </AlertDescription>
-                    </Alert>
-                }
-                {vocabFeedback && (
-                    <>
-                    <Alert variant={vocabFeedback.type === 'correct' ? 'default' : 'destructive'} className="mt-4">
-                        {vocabFeedback.type === 'correct' ? <CheckCircle className="h-4 w-4" /> : <XCircle className="h-4 w-4" />}
-                        <AlertTitle>{vocabFeedback.type === 'correct' ? 'Верно!' : 'Обратите внимание'}</AlertTitle>
-                        <AlertDescription className="prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: vocabFeedback.message }} />
-                    </Alert>
-                    <Button onClick={proceedToNextPracticeWord} className="mt-4 w-full">Продолжить</Button>
-                    </>
-                )}
-            </div>
-            <DialogFooter>
-                <Progress value={((vocabIndex + 1) / shuffledVocabulary.length) * 100} className="w-full"/>
-            </DialogFooter>
+                    <div className="flex-grow">
+                      <AlertTitle>{vocabFeedback.type === 'correct' ? 'Верно!' : 'Обратите внимание'}</AlertTitle>
+                      <AlertDescription className="prose prose-sm max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: vocabFeedback.message }} />
+                    </div>
+                    <SpeakButton text={currentVocabWord.type === 'noun' ? `${currentVocabWord.article} ${currentVocabWord.german}` : currentVocabWord.german} size="sm" variant="ghost" />
+                  </div>
+                </Alert>
+                <Button onClick={proceedToNextPracticeWord} className="mt-4 w-full">Продолжить</Button>
+              </>
+            )}
+          </div>
+          <DialogFooter>
+            <Progress value={((vocabIndex + 1) / shuffledVocabulary.length) * 100} className="w-full" />
+          </DialogFooter>
         </DialogContent>
       );
     }
@@ -289,25 +298,25 @@ export function GlobalVocabularyTrainer({ words }: { words: VocabularyWord[] }) 
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <Card className="bg-gradient-to-br from-card to-muted/30">
         <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-                <div className="flex-shrink-0 rounded-full bg-primary/10 p-3 text-primary">
-                    <BrainCircuit className="h-6 w-6" />
-                </div>
-                <div>
-                    <h2 className="text-2xl font-bold font-headline">Словарный тренажер</h2>
-                    <p className="text-sm font-normal text-muted-foreground">Повторяйте все изученные слова в одном месте</p>
-                </div>
-            </CardTitle>
+          <CardTitle className="flex items-center gap-3">
+            <div className="flex-shrink-0 rounded-full bg-primary/10 p-3 text-primary">
+              <BrainCircuit className="h-6 w-6" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold font-headline">Словарный тренажер</h2>
+              <p className="text-sm font-normal text-muted-foreground">Повторяйте все изученные слова в одном месте</p>
+            </div>
+          </CardTitle>
         </CardHeader>
         <CardContent>
-            <p className="text-muted-foreground">Слов для изучения: <span className="font-bold text-primary">{wordsForTraining.length}</span> из <span className="font-bold">{words.length}</span>. Регулярное повторение - ключ к успеху!</p>
+          <p className="text-muted-foreground">Слов для изучения: <span className="font-bold text-primary">{wordsForTraining.length}</span> из <span className="font-bold">{words.length}</span>. Регулярное повторение - ключ к успеху!</p>
         </CardContent>
         <CardFooter>
-            <DialogTrigger asChild>
-                <Button className="w-full" disabled={words.length === 0}>
-                    {words.length > 0 ? "Начать тренировку" : "Сначала пройдите урок"}
-                </Button>
-            </DialogTrigger>
+          <DialogTrigger asChild>
+            <Button className="w-full" disabled={words.length === 0}>
+              {words.length > 0 ? "Начать тренировку" : "Сначала пройдите урок"}
+            </Button>
+          </DialogTrigger>
         </CardFooter>
       </Card>
       {renderContent()}
@@ -315,4 +324,3 @@ export function GlobalVocabularyTrainer({ words }: { words: VocabularyWord[] }) 
   );
 }
 
-    

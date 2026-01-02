@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { useState, useEffect } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { SpeakButton } from '@/components/speak-button';
 
 export function WordCard({ word }: { word: VocabularyWord }) {
   const [isFlipped, setIsFlipped] = useState(false);
@@ -117,7 +118,10 @@ export function WordCard({ word }: { word: VocabularyWord }) {
       <div className={cn("flex min-h-[215px] flex-col p-4 [backface-visibility:hidden]")}>
         <div className="flex-1">
           <div className="flex justify-between items-start">
-            <p className="text-2xl font-bold">{getGermanDisplay()}</p>
+            <div className="flex flex-col gap-1">
+              <p className="text-2xl font-bold">{getGermanDisplay()}</p>
+              <SpeakButton text={getGermanDisplay()} size="sm" variant="secondary" className="w-fit h-7 px-2" showText />
+            </div>
             <Badge variant="secondary">{getGermanType(word.type)}</Badge>
           </div>
           <Separator className="my-3" />
@@ -141,7 +145,10 @@ export function WordCard({ word }: { word: VocabularyWord }) {
               <p className="text-2xl font-bold flex items-center gap-2">
                 {word.russian}
               </p>
-              <p className="text-lg text-muted-foreground">{getGermanDisplay()}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-lg text-muted-foreground">{getGermanDisplay()}</p>
+                <SpeakButton text={getGermanDisplay()} size="icon" className="h-6 w-6" />
+              </div>
             </div>
             <Badge variant="outline">{getRussianType(word.type)}</Badge>
           </div>

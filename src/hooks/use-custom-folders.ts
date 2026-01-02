@@ -3,71 +3,67 @@
 import { useState, useEffect, useCallback } from 'react';
 import { CustomFolder, UserVocabularyWord } from '@/lib/types';
 import { v4 as uuidv4 } from 'uuid';
-
-const STORAGE_KEY = 'deutsch-learning-custom-folders';
+import { storage } from '@/lib/storage';
 
 export function useCustomFolders() {
     const [folders, setFolders] = useState<CustomFolder[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    // Initial load from localStorage
     useEffect(() => {
-        const loadFolders = () => {
-            try {
-                const stored = window.localStorage.getItem(STORAGE_KEY);
-                if (stored) {
-                    setFolders(JSON.parse(stored));
-                }
-            } catch (error) {
-                console.error('Failed to load custom folders:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        loadFolders();
+        setFolders(storage.getCustomFolders());
+        setIsLoading(false);
     }, []);
 
     const saveFolders = useCallback((newFolders: CustomFolder[]) => {
         setFolders(newFolders);
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(newFolders));
+        storage.setCustomFolders(newFolders);
     }, []);
 
-    const createFolder = useCallback((name: string) => {
+    const createFolder = useCallback(async (name: string) => {
+        const id = uuidv4();
         const newFolder: CustomFolder = {
-            id: uuidv4(),
+            id,
             name,
             words: [],
             createdAt: Date.now(),
             updatedAt: Date.now(),
         };
-        saveFolders([...folders, newFolder]);
-        return newFolder.id;
-    }, [folders, saveFolders]);
+        // Optimistic update
+        const currentFolders = storage.getCustomFolders();
+        const newFolders = [...currentFolders, newFolder];
+        saveFolders(newFolders);
+        return id;
+    }, [saveFolders]);
 
-    const deleteFolder = useCallback((id: string) => {
-        saveFolders(folders.filter(f => f.id !== id));
-    }, [folders, saveFolders]);
+    const deleteFolder = useCallback(async (id: string) => {
+        const currentFolders = storage.getCustomFolders();
+        const newFolders = currentFolders.filter(f => f.id !== id);
+        saveFolders(newFolders);
+    }, [saveFolders]);
 
     const getFolder = useCallback((id: string) => {
         return folders.find(f => f.id === id);
     }, [folders]);
 
-    const addWordToFolder = useCallback((folderId: string, word: UserVocabularyWord) => {
-        const newFolders = folders.map(f => {
+    const addWordToFolder = useCallback(async (folderId: string, userWord: UserVocabularyWord) => {
+        const currentFolders = storage.getCustomFolders();
+        const newFolders = currentFolders.map(f => {
             if (f.id === folderId) {
                 return {
                     ...f,
-                    words: [...f.words, word],
+                    words: [...f.words, userWord],
                     updatedAt: Date.now()
                 };
             }
             return f;
         });
         saveFolders(newFolders);
-    }, [folders, saveFolders]);
+    }, [saveFolders]);
 
-    const updateWordInFolder = useCallback((folderId: string, updatedWord: UserVocabularyWord) => {
-        const newFolders = folders.map(f => {
+    const updateWordInFolder = useCallback(async (folderId: string, updatedWord: UserVocabularyWord) => {
+        const currentFolders = storage.getCustomFolders();
+        const newFolders = currentFolders.map(f => {
             if (f.id === folderId) {
                 return {
                     ...f,
@@ -78,11 +74,11 @@ export function useCustomFolders() {
             return f;
         });
         saveFolders(newFolders);
-    }, [folders, saveFolders]);
+    }, [saveFolders]);
 
-
-    const removeWordFromFolder = useCallback((folderId: string, wordId: string) => {
-        const newFolders = folders.map(f => {
+    const removeWordFromFolder = useCallback(async (folderId: string, wordId: string) => {
+        const currentFolders = storage.getCustomFolders();
+        const newFolders = currentFolders.map(f => {
             if (f.id === folderId) {
                 return {
                     ...f,
@@ -93,7 +89,7 @@ export function useCustomFolders() {
             return f;
         });
         saveFolders(newFolders);
-    }, [folders, saveFolders]);
+    }, [saveFolders]);
 
     return {
         folders,

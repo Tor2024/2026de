@@ -23,6 +23,7 @@ import { ProgressCircle } from '@/components/progress-circle';
 import { GlobalVocabularyTrainer } from '@/components/global-vocabulary-trainer';
 import type { VocabularyWord } from '@/lib/types';
 import { commonWords } from '@/lib/common-words';
+import { useUnifiedSRS } from '@/hooks/use-unified-srs';
 
 
 export default function DashboardPage() {
@@ -62,11 +63,11 @@ export default function DashboardPage() {
           seenWords.add(commonWord.german);
         }
       });
-      
+
       setAllLearnedWords(wordsFromTopics);
     }
   }, [progress, isClient]);
-  
+
   const calculateLevelProgress = (levelId: string) => {
     const level = curriculum.levels.find(l => l.id === levelId);
     if (!level || level.topics.length === 0) {
@@ -77,6 +78,8 @@ export default function DashboardPage() {
     }, 0);
     return Math.round(totalProficiency / level.topics.length);
   };
+
+  const { dueWords } = useUnifiedSRS();
 
   return (
     <div className="container mx-auto py-8">
@@ -89,8 +92,47 @@ export default function DashboardPage() {
         </p>
       </header>
 
-      <div className="mb-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
         <GlobalVocabularyTrainer words={allLearnedWords} />
+
+        <Card className="flex flex-col bg-gradient-to-br from-primary/5 via-transparent to-transparent border-primary/20 shadow-xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 p-8 opacity-5">
+            <BrainCircuit className="h-32 w-32" />
+          </div>
+          <CardHeader className="relative z-10">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <BrainCircuit className="h-6 w-6 text-primary" />
+              </div>
+              <span className="text-xs font-bold uppercase tracking-widest text-primary">Умное повторение</span>
+            </div>
+            <CardTitle className="text-3xl font-headline font-bold">Центр SRS</CardTitle>
+            <CardDescription className="text-base">
+              Используйте научно обоснованный метод интервальных повторений для запоминания слов навсегда.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex-grow flex flex-col justify-center relative z-10 py-6">
+            <div className="flex items-center gap-4 mb-2">
+              <div className="text-5xl font-black text-foreground">
+                {isClient ? dueWords.length : '...'}
+              </div>
+              <div className="flex flex-col">
+                <span className="text-sm font-bold text-muted-foreground leading-none">СЛОВ К</span>
+                <span className="text-sm font-bold text-muted-foreground leading-none">ПОВТОРЕНИЮ</span>
+              </div>
+            </div>
+            <p className="text-sm text-muted-foreground mt-4">
+              Мы объединили слова из всех пройденных вами тем и ваших личных словарей.
+            </p>
+          </CardContent>
+          <CardFooter className="relative z-10 pb-8">
+            <Button asChild size="lg" className="w-full h-14 text-lg shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform">
+              <Link href="/review">
+                Запустить сессию <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
 
       <h2 className="text-3xl font-bold font-headline mb-6 text-center">Уровни обучения</h2>

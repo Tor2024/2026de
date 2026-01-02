@@ -13,6 +13,8 @@ import { enrichWord } from '@/ai/flows/enrich-word';
 import { UserVocabularyWord, SM2State, INITIAL_SM2_STATE } from '@/lib/types';
 import { v4 as uuidv4 } from 'uuid';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { SpeakButton } from '@/components/speak-button';
+
 
 export default function FolderDetailsPage({ params }: { params: Promise<{ folderId: string }> }) {
     const { folderId } = use(params);
@@ -175,6 +177,7 @@ export default function FolderDetailsPage({ params }: { params: Promise<{ folder
                                     <div>
                                         <div className="flex items-center gap-2">
                                             <h3 className="font-bold text-lg">{word.german}</h3>
+                                            <SpeakButton text={word.type === 'noun' ? `${(word as any).article} ${word.german}` : word.german} size="icon" className="h-6 w-6" />
                                             {isDue && (
                                                 <span className="relative flex h-2 w-2">
                                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -191,14 +194,11 @@ export default function FolderDetailsPage({ params }: { params: Promise<{ folder
                                                 </span>
                                                 {(word as any).plural && (
                                                     <span className="text-muted-foreground text-xs ml-1">
-                                                        {/* Dictionary style: ", Pl. <plural>" or just "/ die <plural>" */}
                                                         / die {(word as any).plural}
                                                     </span>
                                                 )}
                                             </div>
                                         )}
-
-
 
                                         {/* Conjunction Details */}
                                         {word.type === 'conjunction' && (
@@ -206,14 +206,6 @@ export default function FolderDetailsPage({ params }: { params: Promise<{ folder
                                                 <div className="text-sm font-medium text-purple-700 dark:text-purple-300">
                                                     {(word as any).structure ? `Где глагол? ${(word as any).structure}` : ''}
                                                 </div>
-                                                {/* Example is shown in main content area usually, but let's check if we want it here. 
-                                                   User asked for "Example and translation of example". 
-                                                   EnrichWord provides 'example' (German). Translation is usually missing in current Enrich.
-                                                   We only have 'context' for user words. 
-                                                   Enrichment only returns 'example' (German). 
-                                                   If the user wants translation of example, we might need to fetch it or rely on context.
-                                                   For now, let's display the structure prominently.
-                                                */}
                                             </div>
                                         )}
 
@@ -265,7 +257,7 @@ export default function FolderDetailsPage({ params }: { params: Promise<{ folder
                                 </div>
                             </CardContent>
                         </Card>
-                    )
+                    );
                 })}
                 {folder.words.length === 0 && (
                     <div className="col-span-full text-center py-12 text-muted-foreground">
@@ -274,6 +266,6 @@ export default function FolderDetailsPage({ params }: { params: Promise<{ folder
                     </div>
                 )}
             </div>
-        </div>
+        </div >
     );
 }

@@ -1,9 +1,11 @@
 
 export interface Exercise {
-  type: 'fill-in-the-blank' | 'multiple-choice' | 'translation' | 'free-text-sentence';
+  id: string;
+  type: 'fill-in-the-blank' | 'multiple-choice' | 'translation' | 'free-text-sentence' | 'word-order';
   question: string;
   options?: string[];
-  answer: string;
+  correctAnswer: string;
+  explanation?: string;
 }
 
 export type WordType = 'noun' | 'verb' | 'adjective' | 'conjunction' | 'preposition' | 'adverb' | 'other';
@@ -79,6 +81,7 @@ export interface SM2State {
   repetitions: number;
   easeFactor: number;
   nextReviewDate: number | null;
+  step?: number;
 }
 
 export interface UserVocabularyWord {
