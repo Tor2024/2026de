@@ -590,7 +590,15 @@ export const curriculum: Curriculum = {
                 { type: 'other', german: 'aus', russian: 'из', example: 'Ich komme aus Russland.' },
                 { type: 'other', german: 'gut', russian: 'хороший, хорошо', example: 'Mir geht es gut.' },
                 { type: 'other', german: 'und', russian: 'и', example: 'Ich und du.' },
-                { type: 'other', german: 'auch', russian: 'тоже', example: 'Ich bin auch hier.' }
+                { type: 'other', german: 'auch', russian: 'тоже', example: 'Ich bin auch hier.' },
+                { type: 'noun', german: 'Name', russian: 'имя/фамилия', article: 'der', plural: 'Namen', pluralArticle: 'die', exampleSingular: 'Mein Name ist Müller.', examplePlural: 'Wie sind die Namen?' },
+                { type: 'noun', german: 'Vorname', russian: 'имя', article: 'der', plural: 'Vornamen', pluralArticle: 'die', exampleSingular: 'Mein Vorname ist Anna.', examplePlural: '-' },
+                { type: 'noun', german: 'Nachname', russian: 'фамилия', article: 'der', plural: 'Nachnamen', pluralArticle: 'die', exampleSingular: 'Müller — это Nachname.', examplePlural: '-' },
+                { type: 'noun', german: 'Alter', russian: 'возраст', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Wie ist dein Alter?', examplePlural: '-' },
+                { type: 'noun', german: 'Wohnort', russian: 'место жительства', article: 'der', plural: 'Wohnorte', pluralArticle: 'die', exampleSingular: 'Mein Wohnort ist Berlin.', examplePlural: '-' },
+                { type: 'noun', german: 'Herkunft', russian: 'происхождение', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Meine Herkunft ist die Ukraine.', examplePlural: '-' },
+                { type: 'verb', german: 'buchstabieren', russian: 'произносить по буквам', conjugation: 'er buchstabiert', example: 'Können Sie das bitte buchstabieren?' },
+                { type: 'verb', german: 'verstehen', russian: 'понимать', conjugation: 'er versteht', example: 'Ich verstehe (не).' }
               ]
             }
           ],
@@ -669,10 +677,21 @@ export const curriculum: Curriculum = {
             {
               theme: 'Члены семьи',
               words: [
-                { type: 'verb', german: 'lieben', russian: 'любить', conjugation: 'er liebt', example: 'Ich liebe meine Familie.' },
+                { type: 'verb', german: 'lieben', russian: 'любить', conjugation: 'er liebt', example: 'Ich love meine Familie.' },
                 { type: 'verb', german: 'leben', russian: 'жить (существовать)', conjugation: 'er lebt', example: 'Mein Opa lebt noch.' },
+                { type: 'noun', german: 'Vater', russian: 'отец', article: 'der', plural: 'Väter', pluralArticle: 'die', exampleSingular: 'Mein Vater arbeitet.', examplePlural: '-' },
+                { type: 'noun', german: 'Mutter', russian: 'мать', article: 'die', plural: 'Mütter', pluralArticle: 'die', exampleSingular: 'Meine Mutter kocht.', examplePlural: '-' },
+                { type: 'noun', german: 'Bruder', russian: 'брат', article: 'der', plural: 'Brüder', pluralArticle: 'die', exampleSingular: 'Hast du einen Bruder?', examplePlural: 'Meine Brüder.' },
+                { type: 'noun', german: 'Schwester', russian: 'сестра', article: 'die', plural: 'Schwestern', pluralArticle: 'die', exampleSingular: 'Meine Schwester lernt.', examplePlural: '-' },
+                { type: 'noun', german: 'Kind', russian: 'ребенок', article: 'das', plural: 'Kinder', pluralArticle: 'die', exampleSingular: 'Ein kleines Kind.', examplePlural: 'Drei Kinder.' },
+                { type: 'noun', german: 'Sohn', russian: 'сын', article: 'der', plural: 'Söhne', pluralArticle: 'die', exampleSingular: 'Mein Sohn играет.', examplePlural: '-' },
+                { type: 'noun', german: 'Tochter', russian: 'дочь', article: 'die', plural: 'Töchter', pluralArticle: 'die', exampleSingular: 'Meine Tochter tanzт.', examplePlural: '-' },
+                { type: 'noun', german: 'Großeltern', russian: 'дедушка и бабушка', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: '-', examplePlural: 'Meine Großeltern leben здесь.' },
+                { type: 'noun', german: 'Freund', russian: 'друг', article: 'der', plural: 'Freunde', pluralArticle: 'die', exampleSingular: 'Das ist mein Freund.', examplePlural: 'Wir sind Freunde.' },
+                { type: 'noun', german: 'Freundin', russian: 'подруга', article: 'die', plural: 'Freundinnen', pluralArticle: 'die', exampleSingular: 'Meine beste Freundin.', examplePlural: '-' },
                 { type: 'other', german: 'verheiratet', russian: 'женатый/замужем', example: 'Ich bin verheiratet.' },
-                { type: 'other', german: 'ledig', russian: 'холостой/незамужняя', example: 'Er ist ledig.' }
+                { type: 'other', german: 'ledig', russian: 'холостой/незамужняя', example: 'Er ist ledig.' },
+                { type: 'other', german: 'allein', russian: 'один/в одиночку', example: 'Ich lebe allein.' }
               ]
             }
           ],
@@ -762,14 +781,22 @@ export const curriculum: Curriculum = {
                 { type: 'noun', german: 'Wasser', russian: 'вода', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Eine Flasche Wasser.', examplePlural: '-' },
                 { type: 'noun', german: 'Käse', russian: 'сыр', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Ein Stück Käse.', examplePlural: '-' },
                 { type: 'noun', german: 'Wurst', russian: 'колбаса', article: 'die', plural: 'Würste', pluralArticle: 'die', exampleSingular: 'Frische Wurst.', examplePlural: '-' },
+                { type: 'noun', german: 'Schinken', russian: 'ветчина', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Schinken essen.', examplePlural: '-' },
+                { type: 'noun', german: 'Hähnchen', russian: 'курица', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Brathähnchen.', examplePlural: '-' },
                 { type: 'noun', german: 'Ei', russian: 'яйцо', article: 'das', plural: 'Eier', pluralArticle: 'die', exampleSingular: 'Ein Ei kochen.', examplePlural: 'Zehn Eier.' },
-                { type: 'noun', german: 'Gemüse', russian: 'овощи', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Viel Gemüse essen.', examplePlural: '-' },
-                { type: 'noun', german: 'Obst', russian: 'фрукты', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Obst kaufen.', examplePlural: '-' },
-                { type: 'verb', german: 'essen', russian: 'есть', conjugation: 'er isst', example: 'Was isst du?' },
-                { type: 'verb', german: 'trinken', russian: 'пить', conjugation: 'er trinkt', example: 'Ich trinke gern Saft.' },
-                { type: 'verb', german: 'möchten', russian: 'хотеть бы', conjugation: 'ich möchte', example: 'Ich möchte bestellen.' },
+                { type: 'noun', german: 'Kartoffel', russian: 'картофель', article: 'die', plural: 'Kartoffeln', pluralArticle: 'die', exampleSingular: 'Eine Kartoffel.', examplePlural: '-' },
+                { type: 'noun', german: 'Reis', russian: 'рис', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Reis kochen.', examplePlural: '-' },
+                { type: 'noun', german: 'Nudeln', russian: 'макароны', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: '-', examplePlural: 'Ich mag Nudeln.' },
+                { type: 'noun', german: 'Salat', russian: 'салат', article: 'der', plural: 'Salate', pluralArticle: 'die', exampleSingular: 'Ein frischer Salat.', examplePlural: '-' },
+                { type: 'noun', german: 'Tomate', russian: 'помидор', article: 'die', plural: 'Tomaten', pluralArticle: 'die', exampleSingular: 'Rote Tomate.', examplePlural: '-' },
+                { type: 'noun', german: 'Banane', russian: 'банан', article: 'die', plural: 'Bananen', pluralArticle: 'die', exampleSingular: 'Eine Banane.', examplePlural: '-' },
+                { type: 'noun', german: 'Saft', russian: 'сок', article: 'der', plural: 'Säfte', pluralArticle: 'die', exampleSingular: 'Apfelsaft.', examplePlural: '-' },
+                { type: 'noun', german: 'Wein', russian: 'вино', article: 'der', plural: 'Weine', pluralArticle: 'die', exampleSingular: 'Ein Glas Wein.', examplePlural: '-' },
+                { type: 'noun', german: 'Bier', russian: 'пиво', article: 'das', plural: 'Biere', pluralArticle: 'die', exampleSingular: 'Ein kaltes Bier.', examplePlural: '-' },
+                { type: 'noun', german: 'Zucker', russian: 'сахар', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Kaffee mit Zucker.', examplePlural: '-' },
+                { type: 'noun', german: 'Salz', russian: 'соль', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Suppe mit Salz.', examplePlural: '-' },
+                { type: 'verb', german: 'kochen', russian: 'готовить/варить', conjugation: 'er kocht', example: 'Ich koche Suppe.' },
                 { type: 'verb', german: 'bestellen', russian: 'заказывать', conjugation: 'ich bestelle', example: 'Wir bestellen Pizza.' },
-                { type: 'verb', german: 'kaufen', russian: 'покупать', conjugation: 'er kauft', example: 'Ich kaufe Brot.' },
                 { type: 'adjective', german: 'lecker', russian: 'вкусный', comparative: 'leckerer', superlative: 'am leckersten', example: 'Sehr lecker!' },
                 { type: 'adjective', german: 'durstig', russian: 'жаждущий', comparative: '-', superlative: '-', example: 'Ich bin durstig.' }
               ]
@@ -846,17 +873,30 @@ export const curriculum: Curriculum = {
                 { type: 'noun', german: 'Zeit', russian: 'время', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Hast du Zeit?', examplePlural: '-' },
                 { type: 'noun', german: 'Frühstück', russian: 'завтрак', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Das Frühstück ist fertig.', examplePlural: '-' },
                 { type: 'noun', german: 'Arbeit', russian: 'работа', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Ich gehe zur Arbeit.', examplePlural: '-' },
+                { type: 'noun', german: 'Pause', russian: 'перерыв', article: 'die', plural: 'Pausen', pluralArticle: 'die', exampleSingular: 'Eine kurze Pause.', examplePlural: '-' },
+                { type: 'noun', german: 'Mittagessen', russian: 'обед', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Mittagessen um 13 Uhr.', examplePlural: '-' },
+                { type: 'noun', german: 'Abendessen', russian: 'ужин', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Leckeres Abendessen.', examplePlural: '-' },
+                { type: 'noun', german: 'Hausaufgabe', russian: 'домашнее задание', article: 'die', plural: 'Hausaufgaben', pluralArticle: 'die', exampleSingular: 'Hausaufgaben machen.', examplePlural: '-' },
                 { type: 'verb', german: 'aufstehen', russian: 'вставать', conjugation: 'ich stehe auf', example: 'Ich stehe früh auf.' },
+                { type: 'verb', german: 'duschen', russian: 'принимать душ', conjugation: 'ich dusche', example: 'Ich dusche morgens.' },
+                { type: 'verb', german: 'frühstücken', russian: 'завтракать', conjugation: 'ich frühstücke', example: 'Wir frühstücken zusammen.' },
+                { type: 'verb', german: 'arbeiten', russian: 'работать', conjugation: 'ich arbeite', example: 'Ich arbeite viel.' },
+                { type: 'verb', german: 'lernen', russian: 'учить/учиться', conjugation: 'ich lerne', example: 'Ich lerne Deutsch.' },
+                { type: 'verb', german: 'gehen', russian: 'идти', conjugation: 'ich gehe', example: 'Ich gehe ins Bett.' },
+                { type: 'verb', german: 'kommen', russian: 'приходить', conjugation: 'ich komme', example: 'Ich komme nach Hause.' },
+                { type: 'verb', german: 'machen', russian: 'делать', conjugation: 'ich mache', example: 'Sport machen.' },
                 { type: 'verb', german: 'anfangen', russian: 'начинать', conjugation: 'es fängt an', example: 'Der Kurs fängt an.' },
-                { type: 'verb', german: 'einkaufen', russian: 'покупать продукты', conjugation: 'ich kauфе ein', example: 'Ich kaufe im Supermarkt ein.' },
+                { type: 'verb', german: 'einkaufen', russian: 'покупать продукты', conjugation: 'ich kaufe ein', example: 'Ich kaufe im Supermarkt ein.' },
                 { type: 'verb', german: 'fernsehen', russian: 'смотреть телевизор', conjugation: 'ich sehe fern', example: 'Wir sehen abends fern.' },
                 { type: 'verb', german: 'anrufen', russian: 'звонить (по телефону)', conjugation: 'ich rufe an', example: 'Ich rufe meine Mutter an.' },
                 { type: 'verb', german: 'schlafen', russian: 'спать', conjugation: 'er schläft', example: 'Gute Nacht, schlaf gut!' },
-                { type: 'adverb', german: 'zuerst', russian: 'сначала', example: 'Zuerст trinke ich Kaffee.' },
+                { type: 'adverb', german: 'zuerst', russian: 'сначала', example: 'Zuerst trinke ich Kaffee.' },
                 { type: 'adverb', german: 'dann', russian: 'потом', example: 'Dann gehe ich los.' },
                 { type: 'adverb', german: 'später', russian: 'позже', example: 'Bis später!' },
                 { type: 'adverb', german: 'früh', russian: 'рано', example: 'Zu früh.' },
-                { type: 'adverb', german: 'spät', russian: 'поздно', example: 'Es ist spät.' }
+                { type: 'adverb', german: 'spät', russian: 'поздно', example: 'Es ist spät.' },
+                { type: 'adverb', german: 'oft', russian: 'часто', example: 'Ich lerne oft.' },
+                { type: 'adverb', german: 'selten', russian: 'редко', example: 'Ich sehe selten fern.' }
               ]
             }
           ],
@@ -932,13 +972,22 @@ export const curriculum: Curriculum = {
               words: [
                 { type: 'noun', german: 'Stadt', russian: 'город', article: 'die', plural: 'Städte', pluralArticle: 'die', exampleSingular: 'Eine große Stadt.', examplePlural: '-' },
                 { type: 'noun', german: 'Straße', russian: 'улица', article: 'die', plural: 'Straßen', pluralArticle: 'die', exampleSingular: 'In dieser Straße.', examplePlural: '-' },
+                { type: 'noun', german: 'Platz', russian: 'площадь/место', article: 'der', plural: 'Plätze', pluralArticle: 'die', exampleSingular: 'Der Alexanderplatz.', examplePlural: '-' },
                 { type: 'noun', german: 'Bahnhof', russian: 'вокзал', article: 'der', plural: 'Bahnhöfe', pluralArticle: 'die', exampleSingular: 'Am Bahnhof.', examplePlural: '-' },
+                { type: 'noun', german: 'Haltestelle', russian: 'остановка', article: 'die', plural: 'Haltestellen', pluralArticle: 'die', exampleSingular: 'An der Haltestelle.', examplePlural: '-' },
+                { type: 'noun', german: 'Ampel', russian: 'светофор', article: 'die', plural: 'Ampeln', pluralArticle: 'die', exampleSingular: 'Die Ampel ist rot.', examplePlural: '-' },
+                { type: 'noun', german: 'Kino', russian: 'кино', article: 'das', plural: 'Kinos', pluralArticle: 'die', exampleSingular: 'Wir gehen ins Kino.', examplePlural: '-' },
+                { type: 'noun', german: 'Museum', russian: 'музей', article: 'das', plural: 'Museen', pluralArticle: 'die', exampleSingular: 'Das Museum ist groß.', examplePlural: '-' },
+                { type: 'noun', german: 'Park', russian: 'парк', article: 'der', plural: 'Parks', pluralArticle: 'die', exampleSingular: 'In den Park gehen.', examplePlural: '-' },
+                { type: 'noun', german: 'Kaufhaus', russian: 'торговый центр', article: 'das', plural: 'Kaufhäuser', pluralArticle: 'die', exampleSingular: 'Im Kaufhaus einkaufen.', examplePlural: '-' },
+                { type: 'noun', german: 'Hotel', russian: 'отель', article: 'das', plural: 'Hotels', pluralArticle: 'die', exampleSingular: 'Ein schönes Hotel.', examplePlural: '-' },
+                { type: 'noun', german: 'Restaurant', russian: 'ресторан', article: 'das', plural: 'Restaurants', pluralArticle: 'die', exampleSingular: 'Im Restaurant essen.', examplePlural: '-' },
+                { type: 'noun', german: 'Apotheke', russian: 'аптека', article: 'die', plural: 'Apotheken', pluralArticle: 'die', exampleSingular: 'Zur Apotheке gehen.', examplePlural: '-' },
                 { type: 'noun', german: 'Bank', russian: 'банк', article: 'die', plural: 'Banken', pluralArticle: 'die', exampleSingular: 'Geld auf der Bank.', examplePlural: '-' },
-                { type: 'noun', german: 'Apotheke', russian: 'аптека', article: 'die', plural: 'Apotheken', pluralArticle: 'die', exampleSingular: 'Zur Apotheke gehen.', examplePlural: '-' },
-                { type: 'noun', german: 'Post', russian: 'почта', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Brief bei der Post.', examplePlural: '-' },
-                { type: 'verb', german: 'finden', russian: 'находить', conjugation: 'er findet', example: 'Ich finde den Weg не.' },
-                { type: 'verb', german: 'suchen', russian: 'искать', conjugation: 'er sucht', example: 'Ich suche das Hotel.' },
-                { type: 'other', german: 'geradeaus', russian: 'прямо', example: 'Immer geradeaus.' },
+                { type: 'verb', german: 'entschuldigen', russian: 'извиняться', conjugation: 'er entschuldigt', example: 'Entschuldigen Sie bitte!' },
+                { type: 'verb', german: 'warten', russian: 'ждать', conjugation: 'er wartet', example: 'Ich warte auf den Bus.' },
+                { type: 'verb', german: 'abbiegen', russian: 'поворачивать', conjugation: 'er biegt ab', example: 'Links abbiegen.' },
+                { type: 'other', german: 'geradeaus', russian: 'прямо', example: 'Imмер geradeaus.' },
                 { type: 'other', german: 'links', russian: 'налево', example: 'Biegen Sie links ab.' },
                 { type: 'other', german: 'rechts', russian: 'направо', example: 'Dann nach rechts.' }
               ]
@@ -1007,6 +1056,10 @@ export const curriculum: Curriculum = {
               theme: 'Профессии и Работа',
               words: [
                 { type: 'noun', german: 'Beruf', russian: 'профессия', article: 'der', plural: 'Berufe', pluralArticle: 'die', exampleSingular: 'Was bist du von Beruf?', examplePlural: '-' },
+                { type: 'noun', german: 'Arbeitgeber', russian: 'работодатель', article: 'der', plural: 'Arbeitgeber', pluralArticle: 'die', exampleSingular: 'Mein Arbeitgeber ist nett.', examplePlural: '-' },
+                { type: 'noun', german: 'Arbeitsplatz', russian: 'рабочее место', article: 'der', plural: 'Arbeitsplätze', pluralArticle: 'die', exampleSingular: 'Mein Arbeitsplatz ist здесь.', examplePlural: '-' },
+                { type: 'noun', german: 'Job', russian: 'работа/подработка', article: 'der', plural: 'Jobs', pluralArticle: 'die', exampleSingular: 'Ich habe einen neuen Job.', examplePlural: '-' },
+                { type: 'noun', german: 'Kollege', russian: 'коллега (м)', article: 'der', plural: 'Kollegen', pluralArticle: 'die', exampleSingular: 'Ein netter Kollege.', examplePlural: '-' },
                 { type: 'noun', german: 'Arbeit', russian: 'работа', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Ich suche Arbeit.', examplePlural: '-' },
                 { type: 'noun', german: 'Lehrer', russian: 'учитель', article: 'der', plural: 'Lehrer', pluralArticle: 'die', exampleSingular: 'Der Lehrer erklärt.', examplePlural: '-' },
                 { type: 'noun', german: 'Schüler', russian: 'ученик', article: 'der', plural: 'Schüler', pluralArticle: 'die', exampleSingular: 'Ein fleißiger Schüler.', examplePlural: '-' },
@@ -1014,10 +1067,16 @@ export const curriculum: Curriculum = {
                 { type: 'noun', german: 'Verkäufer', russian: 'продавец', article: 'der', plural: 'Verkäufer', pluralArticle: 'die', exampleSingular: 'Der Verkäufer помогает.', examplePlural: '-' },
                 { type: 'noun', german: 'Kellner', russian: 'официант', article: 'der', plural: 'Kellner', pluralArticle: 'die', exampleSingular: 'Kellner von Beruf.', examplePlural: '-' },
                 { type: 'noun', german: 'Arzt', russian: 'врач', article: 'der', plural: 'Ärzte', pluralArticle: 'die', exampleSingular: 'Zum Arzt gehen.', examplePlural: '-' },
+                { type: 'noun', german: 'Krankenschwester', russian: 'медсестра', article: 'die', plural: 'Krankenschwestern', pluralArticle: 'die', exampleSingular: 'Sie ist Krankenschwester.', examplePlural: '-' },
+                { type: 'noun', german: 'Koch', russian: 'повар', article: 'der', plural: 'Köche', pluralArticle: 'die', exampleSingular: 'Ein guter Koch.', examplePlural: '-' },
+                { type: 'noun', german: 'Fahrer', russian: 'водитель', article: 'der', plural: 'Fahrer', pluralArticle: 'die', exampleSingular: 'Busfahrer.', examplePlural: '-' },
                 { type: 'noun', german: 'Firma', russian: 'фирма', article: 'die', plural: 'Firmen', pluralArticle: 'die', exampleSingular: 'Eine große Firma.', examplePlural: '-' },
                 { type: 'verb', german: 'arbeiten', russian: 'работать', conjugation: 'ich arbeite', example: 'Wo arbeitest du?' },
+                { type: 'verb', german: 'suchen', russian: 'искать', conjugation: 'ich suche', example: 'Ich suche einen Job.' },
+                { type: 'verb', german: 'verdienen', russian: 'зарабатывать', conjugation: 'ich verdiene', example: 'Geld verdienen.' },
                 { type: 'verb', german: 'sich bewerben', russian: 'подавать заявку', conjugation: 'ich bewerbe mich', example: 'На должность bewerben.' },
-                { type: 'other', german: 'arbeitslos', russian: 'безработный', example: 'Er ist zurzeit arbeitslos.' }
+                { type: 'other', german: 'arbeitslos', russian: 'безработный', example: 'Er ist zurzeit arbeitslos.' },
+                { type: 'other', german: 'selbstständig', russian: 'самозанятый/фрилансер', example: 'Ich bin selbstständig.' }
               ]
             }
           ],
@@ -1036,6 +1095,215 @@ export const curriculum: Curriculum = {
               question: 'Ich arbeite ___ Siemens.',
               correctAnswer: 'bei',
               explanation: 'Предлог bei используется с названиями компаний.'
+            }
+          ]
+        },
+        {
+          id: 'natur-und-umwelt-a1',
+          title: 'Природа и экология (Natur & Umwelt)',
+          explanation: `
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">🌳</span> Природа вокруг нас
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  На уровне A1 мы учимся называть основные элементы природы и говорить о погоде.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <div class="p-4 bg-muted/50 rounded-lg border">
+                    <h3 class="font-bold mb-2 text-primary">Погода (Das Wetter):</h3>
+                    <ul class="text-sm space-y-1">
+                      <li>• Die Sonne scheint. (Солнце светит)</li>
+                      <li>• Es regnet. (Идет дождь)</li>
+                      <li>• Es ist warm / kalt. (Тепло / холодно)</li>
+                    </ul>
+                  </div>
+                  <div class="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                    <h3 class="font-bold mb-2 text-primary">Ваше мнение:</h3>
+                    <p class="text-sm italic">"Ich finde die Natur <strong>schön</strong>."</p>
+                    <p class="text-sm italic">"Ich mag die Sonne."</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `,
+          vocabulary: [
+            {
+              theme: 'Природа и Погода',
+              words: [
+                { type: 'noun', german: 'Natur', russian: 'природа', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Die Natur ist wichtig.', examplePlural: '-' },
+                { type: 'noun', german: 'Baum', russian: 'дерево', article: 'der', plural: 'Bäume', pluralArticle: 'die', exampleSingular: 'Ein hoher Baum.', examplePlural: '-' },
+                { type: 'noun', german: 'Blume', russian: 'цветок', article: 'die', plural: 'Blumen', pluralArticle: 'die', exampleSingular: 'Eine schöne Blume.', examplePlural: '-' },
+                { type: 'noun', german: 'Wald', russian: 'лес', article: 'der', plural: 'Wälder', pluralArticle: 'die', exampleSingular: 'Im Wald spazieren.', examplePlural: '-' },
+                { type: 'noun', german: 'Wetter', russian: 'погода', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Wie ist das Wetter?', examplePlural: '-' },
+                { type: 'noun', german: 'Sonne', russian: 'солнце', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Die Sonne scheint.', examplePlural: '-' },
+                { type: 'noun', german: 'Regen', russian: 'дождь', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Es gibt viel Regen.', examplePlural: '-' },
+                { type: 'noun', german: 'Müll', russian: 'мусор', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Müll trennen.', examplePlural: '-' },
+                { type: 'verb', german: 'scheinen', russian: 'светить', conjugation: 'die Sonne scheint', example: 'Heute scheint die Sonne.' },
+                { type: 'verb', german: 'regnen', russian: 'идти (о дожде)', conjugation: 'es regnet', example: 'Es regnet сегодня.' },
+                { type: 'verb', german: 'schützen', russian: 'защищать', conjugation: 'wir schützen', example: 'Die Umwelt schützen.' },
+                { type: 'adjective', german: 'sauber', russian: 'чистый', comparative: 'sauberer', superlative: 'am saubersten', example: 'Die Luft ist sauber.' },
+                { type: 'adjective', german: 'schmutzig', russian: 'грязный', comparative: 'schmutziger', superlative: 'am schmutzigsten', example: 'Das Wasser ist schmutzig.' },
+                { type: 'adjective', german: 'wichtig', russian: 'важный', comparative: 'wichtiger', superlative: 'am wichtigsten', example: 'Umwelt ist wichtig.' }
+              ]
+            }
+          ],
+          exercises: [
+            {
+              id: 'a1-7-ex-1',
+              type: 'multiple-choice',
+              question: 'Как сказать "Светит солнце"?',
+              options: ['Die Sonne scheint', 'Es regnet', 'Es ist kalt', 'Der Baum ist grün'],
+              correctAnswer: 'Die Sonne scheint',
+              explanation: 'Scheinen — светить.'
+            },
+            {
+              id: 'a1-7-ex-2',
+              type: 'fill-in-the-blank',
+              question: 'Природа важна: Die Natur ist ___ .',
+              correctAnswer: 'wichtig',
+              explanation: 'Wichtig — важный.'
+            }
+          ]
+        },
+        {
+          id: 'medien-a1',
+          title: 'СМИ и цифровой мир (Medien & Digitales)',
+          explanation: `
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">📱</span> Мой смартфон и интернет
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  Мы используем гаджеты каждый день. Как называются основные вещи?
+                </p>
+                
+                <div class="bg-muted p-4 rounded-lg mb-6">
+                  <h3 class="font-bold mb-2">Что вы делаете в интернете?</h3>
+                  <ul class="text-sm space-y-1 italic">
+                    <li>• Ich surfe im Internet. (Я сижу в интернете)</li>
+                    <li>• Ich schreibe E-Mails. (Я пишу письма)</li>
+                    <li>• Ich sehe Videos. (Я смотрю видео)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          `,
+          vocabulary: [
+            {
+              theme: 'Медиа и Техника',
+              words: [
+                { type: 'noun', german: 'Handy', russian: 'мобильный телефон', article: 'das', plural: 'Handys', pluralArticle: 'die', exampleSingular: 'Wo ist mein Handy?', examplePlural: '-' },
+                { type: 'noun', german: 'Smartphone', russian: 'смартфон', article: 'das', plural: 'Smartphones', pluralArticle: 'die', exampleSingular: 'Ein neues Smartphone.', examplePlural: '-' },
+                { type: 'noun', german: 'Internet', russian: 'интернет', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Im Internet surfen.', examplePlural: '-' },
+                { type: 'noun', german: 'Computer', russian: 'компьютер', article: 'der', plural: 'Computer', pluralArticle: 'die', exampleSingular: 'Am Computer работать.', examplePlural: '-' },
+                { type: 'noun', german: 'Laptop', russian: 'ноутбук', article: 'der', plural: 'Laptops', pluralArticle: 'die', exampleSingular: 'Mein Laptop ist schnell.', examplePlural: '-' },
+                { type: 'noun', german: 'E-Mail', russian: 'электронное письмо', article: 'die', plural: 'E-Mails', pluralArticle: 'die', exampleSingular: 'Одна E-Mail schreiben.', examplePlural: '-' },
+                { type: 'noun', german: 'Information', russian: 'информация', article: 'die', plural: 'Informationen', pluralArticle: 'die', exampleSingular: 'Ich brauche информация.', examplePlural: '-' },
+                { type: 'noun', german: 'Nachricht', russian: 'сообщение/новость', article: 'die', plural: 'Nachrichten', pluralArticle: 'die', exampleSingular: 'Eine Nachricht bekommen.', examplePlural: '-' },
+                { type: 'noun', german: 'Radio', russian: 'радио', article: 'das', plural: 'Radios', pluralArticle: 'die', exampleSingular: 'Radio hören.', examplePlural: '-' },
+                { type: 'noun', german: 'Fernseher', russian: 'телевизор', article: 'der', plural: 'Fernseher', pluralArticle: 'die', exampleSingular: 'Der Fernseher ist aus.', examplePlural: '-' },
+                { type: 'verb', german: 'surfen', russian: 'сидеть (в интернете)', conjugation: 'er surft', example: 'Ich surfe gern.' },
+                { type: 'verb', german: 'schreiben', russian: 'писать', conjugation: 'er schreibt', example: 'Ich schreibe Nachrichten.' },
+                { type: 'verb', german: 'telefonieren', russian: 'говорить по телефону', conjugation: 'er telefoniert', example: 'Mit Freunden telefonieren.' },
+                { type: 'verb', german: 'nutzen', russian: 'использовать', conjugation: 'er nutzt', example: 'Apps nutzen.' },
+                { type: 'adjective', german: 'schnell', russian: 'быстрый', comparative: 'schneller', superlative: 'am schnellsten', example: 'Das Internet ist быстрое.' },
+                { type: 'adjective', german: 'langsam', russian: 'медленный', comparative: 'langsamer', superlative: 'am langsamsten', example: 'Mein Computer ist медленный.' },
+                { type: 'adjective', german: 'praktisch', russian: 'практичный', comparative: 'praktischer', superlative: 'am praktischsten', example: 'Ein Handy ist практичное.' }
+              ]
+            }
+          ],
+          exercises: [
+            {
+              id: 'a1-8-ex-1',
+              type: 'multiple-choice',
+              question: 'Что мы делаем со смартфоном?',
+              options: ['essen', 'telefonieren', 'schwimmen', 'kochen'],
+              correctAnswer: 'telefonieren',
+              explanation: 'Telefonieren — говорить по телефону.'
+            },
+            {
+              id: 'a1-8-ex-2',
+              type: 'fill-in-the-blank',
+              question: 'Я сижу в интернете: Ich ___ im Internet.',
+              correctAnswer: 'surfe',
+              explanation: 'Surfen — заниматься серфингом / сидеть в интернете.'
+            }
+          ]
+        },
+        {
+          id: 'schule-lernen-a1',
+          title: 'Школа и изучение языков (Schule & Lernen)',
+          explanation: `
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">🏫</span> В классе
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  Учимся называть школьные предметы и говорить о процессе обучения.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                  <div class="p-4 bg-muted/50 rounded-lg border">
+                    <h3 class="font-bold mb-2 text-primary">Предметы (Schulsachen):</h3>
+                    <ul class="text-sm space-y-1">
+                      <li>• der Stift (ручка/карандаш)</li>
+                      <li>• das Buch (книга)</li>
+                      <li>• das Heft (тетрадь)</li>
+                    </ul>
+                  </div>
+                  <div class="p-4 bg-primary/5 border border-primary/20 rounded-lg">
+                    <h3 class="font-bold mb-2 text-primary">Почему вы учитесь?</h3>
+                    <p class="text-sm italic">"Ich lerne Deutsch, это <strong>interessant</strong>."</p>
+                    <p class="text-sm italic">"Deutsch ist <strong>schwierig</strong>, aber <strong>gut</strong>."</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `,
+          vocabulary: [
+            {
+              theme: 'Школа и Учеба',
+              words: [
+                { type: 'noun', german: 'Schule', russian: 'школа', article: 'die', plural: 'Schulen', pluralArticle: 'die', exampleSingular: 'In die Schule gehen.', examplePlural: '-' },
+                { type: 'noun', german: 'Lehrer', russian: 'учитель', article: 'der', plural: 'Lehrer', pluralArticle: 'die', exampleSingular: 'Der Lehrer ist nett.', examplePlural: '-' },
+                { type: 'noun', german: 'Schüler', russian: 'ученик', article: 'der', plural: 'Schüler', pluralArticle: 'die', exampleSingular: 'Ein guter Schüler.', examplePlural: '-' },
+                { type: 'noun', german: 'Kurs', russian: 'курс', article: 'der', plural: 'Kurse', pluralArticle: 'die', exampleSingular: 'Der Deutschkurs.', examplePlural: '-' },
+                { type: 'noun', german: 'Sprache', russian: 'язык', article: 'die', plural: 'Sprachen', pluralArticle: 'die', exampleSingular: 'Welche Sprache?', examplePlural: '-' },
+                { type: 'noun', german: 'Wort', russian: 'слово', article: 'das', plural: 'Wörter', pluralArticle: 'die', exampleSingular: 'Ein новое слово.', examplePlural: '-' },
+                { type: 'noun', german: 'Satz', russian: 'предложение', article: 'der', plural: 'Sätze', pluralArticle: 'die', exampleSingular: 'Einen Satz schreiben.', examplePlural: '-' },
+                { type: 'noun', german: 'Hausaufgabe', russian: 'домашнее задание', article: 'die', plural: 'Hausaufgaben', pluralArticle: 'die', exampleSingular: 'Hausaufgaben machen.', examplePlural: '-' },
+                { type: 'verb', german: 'lernen', russian: 'учить/учиться', conjugation: 'er lernt', example: 'Ich lerne Deutsch.' },
+                { type: 'verb', german: 'lesen', russian: 'читать', conjugation: 'er liest', example: 'Ein Buch lesen.' },
+                { type: 'verb', german: 'schreiben', russian: 'писать', conjugation: 'er schreibt', example: 'Einen Satz schreiben.' },
+                { type: 'verb', german: 'fragen', russian: 'спрашивать', conjugation: 'er fragt', example: 'Den Lehrer fragen.' },
+                { type: 'verb', german: 'antworten', russian: 'отвечать', conjugation: 'er antwortet', example: 'На вопрос отвечать.' },
+                { type: 'adjective', german: 'interessant', russian: 'интересный', comparative: 'interessanter', superlative: 'am interessantesten', example: 'Deutsch ist интересно.' },
+                { type: 'adjective', german: 'langweilig', russian: 'скучный', comparative: 'langweiliger', superlative: 'am langweiligen', example: 'Das ist скучно.' },
+                { type: 'adjective', german: 'schwer', russian: 'трудный/тяжелый', comparative: 'schwerer', superlative: 'am schwersten', example: 'Die Prüfung ist тяжелая.' },
+                { type: 'adjective', german: 'einfach', russian: 'простой', comparative: 'einfacher', superlative: 'am einfachsten', example: 'Das ist просто.' }
+              ]
+            }
+          ],
+          exercises: [
+            {
+              id: 'a1-9-ex-1',
+              type: 'multiple-choice',
+              question: 'Кому мы задаем вопросы в школе?',
+              options: ['dem Lehrer', 'dem Tisch', 'dem Auto', 'dem Apfel'],
+              correctAnswer: 'dem Lehrer',
+              explanation: 'Lehrer — учитель.'
+            },
+            {
+              id: 'a1-9-ex-2',
+              type: 'fill-in-the-blank',
+              question: 'Немецкий интересный: Deutsch ist ___ .',
+              correctAnswer: 'interessant',
+              explanation: 'Interessant — интересный.'
             }
           ]
         }
@@ -1130,10 +1398,17 @@ export const curriculum: Curriculum = {
                 { type: 'verb', german: 'reisen', russian: 'путешествовать', conjugation: 'ich reise', example: 'Ich reise gern.' },
                 { type: 'verb', german: 'abfahren', russian: 'отправляться', conjugation: 'er fährt ab', example: 'Der Bus fährt gleich ab.' },
                 { type: 'verb', german: 'ankommen', russian: 'прибывать', conjugation: 'er kommt an', example: 'Wann kommen wir an?' },
-                { type: 'verb', german: 'einsteigen', russian: 'входить (в транспорт)', conjugation: 'ich steige ein', example: 'Bitte schnell einsteigen.' },
-                { type: 'verb', german: 'aussteigen', russian: 'выходить (из транспорта)', conjugation: 'ich steige aus', example: 'Wir müssen hier aussteigen.' },
-                { type: 'verb', german: 'umsteigen', russian: 'делать пересадку', conjugation: 'ich steige um', example: 'Wir müssen in Berlin umsteigen.' },
-                { type: 'verb', german: 'fliegen', russian: 'летать', conjugation: 'er fliegt', example: 'Wir fliegen nach Spanien.' },
+                { type: 'verb', german: 'einsteigen', russian: 'садиться (в транспорт)', conjugation: 'er steigt ein', example: 'Bitte alle einsteigen!' },
+                { type: 'verb', german: 'aussteigen', russian: 'выходить (из транспорта)', conjugation: 'er steigt aus', example: 'An der nächsten Haltestelle aussteigen.' },
+                { type: 'verb', german: 'umsteigen', russian: 'пересаживаться', conjugation: 'er steigt um', example: 'Muss я umsteigen?' },
+                { type: 'verb', german: 'fliegen', russian: 'летать', conjugation: 'er fliegt', example: 'Wir fliegen nach London.' },
+                { type: 'verb', german: 'einpacken', russian: 'упаковывать', conjugation: 'ich packe ein', example: 'Ich packe den Koffer ein.' },
+                { type: 'noun', german: 'Verbindung', russian: 'сообщение/связь/пересадка', article: 'die', plural: 'Verbindungen', pluralArticle: 'die', exampleSingular: 'Eine gute Verbindung.', examplePlural: '-' },
+                { type: 'noun', german: 'Umsteigen', russian: 'пересадка (процесс)', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Ohne Umsteigen.', examplePlural: '-' },
+                { type: 'noun', german: 'Direktflug', russian: 'прямой рейс', article: 'der', plural: 'Direktflüge', pluralArticle: 'die', exampleSingular: 'Ein Direktflug nach Berlin.', examplePlural: '-' },
+                { type: 'noun', german: 'Sicherheit', russian: 'безопасность', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Sicherheit ist wichtig.', examplePlural: '-' },
+                { type: 'other', german: 'pünktlich', russian: 'пунктуальный', example: 'Der Zug ist pünktlich.' },
+                { type: 'other', german: 'bequem', russian: 'удобный', example: 'Eine bequeme Reise.' },
                 { type: 'verb', german: 'packen', russian: 'паковать', conjugation: 'ich packe', example: 'Koffer packen.' },
 
                 { type: 'preposition', german: 'nach', russian: 'в (города/страны)', case: 'Dativ', example: 'Ich fahre nach Berlin.' },
@@ -1237,6 +1512,11 @@ export const curriculum: Curriculum = {
                 { type: 'verb', german: 'buchen', russian: 'бронировать', conjugation: 'ich buche', example: 'Zimmer buchen.' },
                 { type: 'verb', german: 'bezahlen', russian: 'оплачивать', conjugation: 'ich bezahle', example: 'Bar oder mit Karte bezahlen.' },
                 { type: 'verb', german: 'übernachten', russian: 'ночевать', conjugation: 'ich übernachte', example: 'Wir übernachten hier.' },
+                { type: 'verb', german: 'stornieren', russian: 'отменять (бронь)', conjugation: 'ich storniere', example: 'Ich muss das Zimmer stornieren.' },
+                { type: 'verb', german: 'beschweren', russian: 'жаловаться', conjugation: 'ich beschwere mich', example: 'Ich möchte mich beschweren.' },
+                { type: 'noun', german: 'Frühstücksbuffet', russian: 'завтрак (шведский стол)', article: 'das', plural: 'Frühstücksbuffets', pluralArticle: 'die', exampleSingular: 'Reichhaltiges Frühstücksbuffet.', examplePlural: '-' },
+                { type: 'noun', german: 'Empfang', russian: 'прием/ресепшн', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Vom Empfang abholen.', examplePlural: '-' },
+                { type: 'noun', german: 'Beschwerde', russian: 'жалоба', article: 'die', plural: 'Beschwerden', pluralArticle: 'die', exampleSingular: 'Eine Beschwerde schreiben.', examplePlural: '-' },
 
                 { type: 'adjective', german: 'frei', russian: 'свободный', comparative: '-', superlative: '-', example: 'Ist das Zimmer frei?' },
                 { type: 'adjective', german: 'belegt', russian: 'занят', comparative: '-', superlative: '-', example: 'Alles belegt.' },
@@ -1357,7 +1637,10 @@ export const curriculum: Curriculum = {
                 { type: 'adjective', german: 'dick', russian: 'толстый', comparative: 'dicker', superlative: 'am dicksten', example: 'Zu dick.' },
                 { type: 'adjective', german: 'dünn', russian: 'тонкий/худой', comparative: 'dünner', superlative: 'am dünnsten', example: 'Er ist dünn.' },
                 { type: 'adjective', german: 'groß', russian: 'большой/высокий', comparative: 'größer', superlative: 'am größten', example: 'Er ist groß.' },
-                { type: 'adjective', german: 'klein', russian: 'маленький', comparative: 'kleiner', superlative: 'am kleinsten', example: 'Sie ist klein.' }
+                { type: 'adjective', german: 'klein', russian: 'маленький', comparative: 'kleiner', superlative: 'am kleinsten', example: 'Sie ist klein.' },
+                { type: 'noun', german: 'Gesundheit', russian: 'здоровье', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Gesundheit ist das Wichtigste.', examplePlural: '-' },
+                { type: 'noun', german: 'Ernährung', russian: 'питание', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Gute Ernährung hilft.', examplePlural: '-' },
+                { type: 'noun', german: 'Bewegung', russian: 'движение', article: 'die', plural: 'Bewegungen', pluralArticle: 'die', exampleSingular: 'Viel Bewegung в день.', examplePlural: '-' }
               ]
             }
           ],
@@ -1531,7 +1814,9 @@ export const curriculum: Curriculum = {
                 { type: 'adjective', german: 'krank', russian: 'больной', comparative: 'kränker', superlative: 'am kränksten', example: 'Ich bin krank.' },
                 { type: 'adjective', german: 'gesund', russian: 'здоровый', comparative: 'gesünder', superlative: 'am gesündesten', example: 'Er ist gesund.' },
                 { type: 'adjective', german: 'schlimm', russian: 'плохой/серьезный', comparative: 'schlimmer', superlative: 'am schlimmsten', example: 'Es ist nicht so schlimm.' },
-                { type: 'other', german: 'Gute Besserung', russian: 'Выздоравливайте!', example: 'Gute Besserung!' }
+                { type: 'other', german: 'Gute Besserung', russian: 'Выздоравливайте!', example: 'Gute Besserung!' },
+                { type: 'noun', german: 'Behandlung', russian: 'лечение', article: 'die', plural: 'Behandlungen', pluralArticle: 'die', exampleSingular: 'Die Behandlung dauert.', examplePlural: '-' },
+                { type: 'noun', german: 'Notaufnahme', russian: 'скорая помощь/приемный покой', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'In die Notaufnahme gehen.', examplePlural: '-' }
               ]
             }
           ],
@@ -1685,7 +1970,11 @@ export const curriculum: Curriculum = {
                 { type: 'adjective', german: 'dunkel', russian: 'темный', comparative: 'dunkler', superlative: 'am dunkelsten', example: 'Dunkles Zimmer.' },
                 { type: 'adjective', german: 'gemütlich', russian: 'уютный', comparative: 'gemütlicher', superlative: 'am gemütlichsten', example: 'Sehr gemütlich.' },
                 { type: 'adjective', german: 'modern', russian: 'современный', comparative: 'moderner', superlative: 'am modernsten', example: 'Moderne Möbel.' },
-                { type: 'adjective', german: 'altmodisch', russian: 'старомодный', comparative: '-', superlative: '-', example: 'Etwas altmodisch.' }
+                { type: 'adjective', german: 'altmodisch', russian: 'старомодный', comparative: '-', superlative: '-', example: 'Etwas altmodisch.' },
+                { type: 'noun', german: 'Stil', russian: 'стиль', article: 'der', plural: 'Stile', pluralArticle: 'die', exampleSingular: 'Moderner Stil.', examplePlural: '-' },
+                { type: 'noun', german: 'Design', russian: 'дизайн', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Schönes Design.', examplePlural: '-' },
+                { type: 'noun', german: 'Platz', russian: 'место', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Wenig Platz.', examplePlural: '-' },
+                { type: 'noun', german: 'Funktion', russian: 'функция', article: 'die', plural: 'Funktionen', pluralArticle: 'die', exampleSingular: 'Praktische Funktion.', examplePlural: '-' }
               ]
             }
           ],
@@ -1704,6 +1993,21 @@ export const curriculum: Curriculum = {
               question: 'Ich kaufe den neu___ Tisch. (Akkusativ)',
               correctAnswer: 'en',
               explanation: 'В Akkusativ мужского рода после определенного артикля прилагательное всегда получает окончание -en.'
+            },
+            {
+              id: 'a2-5-ex-3',
+              type: 'multiple-choice',
+              question: 'Как выразить мнение о цвете мебели?',
+              options: ['Ich finde dunkle Möbel ungemütlich.', 'Möbel ist grün.', 'Ich habe einen Tisch.', 'Dunkel ist gut.'],
+              correctAnswer: 'Ich finde dunkle Möbel ungemütlich.',
+              explanation: '"Ich finde..." — база для выражения личного мнения на уровне A2.'
+            },
+            {
+              id: 'a2-5-ex-4',
+              type: 'fill-in-the-blank',
+              question: 'Moderner ___ (стиль) ist wichtig.',
+              correctAnswer: 'Stil',
+              explanation: 'Stil — стиль.'
             }
           ]
         },
@@ -1830,7 +2134,11 @@ export const curriculum: Curriculum = {
                 { type: 'adjective', german: 'billig', russian: 'дешевый', comparative: 'billiger', superlative: 'am billigsten', example: 'Sehr billig.' },
                 { type: 'adjective', german: 'günstig', russian: 'выгодный', comparative: 'günstiger', superlative: 'am günstigsten', example: 'Günstig.' },
                 { type: 'adjective', german: 'zentral', russian: 'центральный', comparative: '-', superlative: '-', example: 'Zentrale Lage.' },
-                { type: 'adjective', german: 'möbliert', russian: 'меблированный', comparative: '-', superlative: '-', example: 'Möbliertes Zimmer.' }
+                { type: 'adjective', german: 'möbliert', russian: 'меблированный', comparative: '-', superlative: '-', example: 'Möbliertes Zimmer.' },
+                { type: 'noun', german: 'Privatsphäre', russian: 'приватность', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Wichtig für die Privatsphäre.', examplePlural: '-' },
+                { type: 'noun', german: 'Lage', russian: 'расположение', article: 'die', plural: 'Lagen', pluralArticle: 'die', exampleSingular: 'Die zentrale Lage.', examplePlural: '-' },
+                { type: 'noun', german: 'Vorteil', russian: 'преимущество', article: 'der', plural: 'Vorteile', pluralArticle: 'die', exampleSingular: 'Ein großer Vorteil.', examplePlural: '-' },
+                { type: 'noun', german: 'Nachteil', russian: 'недостаток', article: 'der', plural: 'Nachteile', pluralArticle: 'die', exampleSingular: 'Der einzige Nachteil.', examplePlural: '-' }
               ]
             }
           ],
@@ -1849,6 +2157,21 @@ export const curriculum: Curriculum = {
               question: 'Ich ___ Miete zahlen. (Я должен/вынужден платить аренду)',
               correctAnswer: 'muss',
               explanation: 'Глагол müssen выражает объективную необходимость.'
+            },
+            {
+              id: 'a2-6-ex-3',
+              type: 'multiple-choice',
+              question: 'Как сказать "По моему мнению, квартира дорогая"?',
+              options: ['Meiner Meinung nach ist die Wohnung teuer.', 'Ich finde, dass die Wohnung teuer.', 'Meine Meinung ist teuer.', 'Wohnung ist teuer.'],
+              correctAnswer: 'Meiner Meinung nach ist die Wohnung teuer.',
+              explanation: 'Meiner Meinung nach — классическая фраза для выражения мнения. Глагол всегда стоит на втором месте сразу после этой фразы.'
+            },
+            {
+              id: 'a2-6-ex-4',
+              type: 'fill-in-the-blank',
+              question: 'Ein ___ (преимущество) ist die Lage.',
+              correctAnswer: 'Vorteil',
+              explanation: 'Vorteil — преимущество, Nachteil — недостаток.'
             }
           ]
         },
@@ -1946,7 +2269,10 @@ export const curriculum: Curriculum = {
                 { type: 'adverb', german: 'morgens', russian: 'по утрам', example: 'Ich trinke morgens Kaffee.' },
                 { type: 'adverb', german: 'abends', russian: 'по вечерам', example: 'Ich lese abends.' },
                 { type: 'adverb', german: 'täglich', russian: 'ежедневно', example: 'Ich arbeite täglich.' },
-                { type: 'adverb', german: 'meistens', russian: 'чаще всего', example: 'Meistens bin ich pünktlich.' }
+                { type: 'adverb', german: 'meistens', russian: 'чаще всего', example: 'Meistens bin ich pünktlich.' },
+                { type: 'noun', german: 'Effizienz', russian: 'эффективность', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Wichtig für die Effizienz.', examplePlural: '-' },
+                { type: 'noun', german: 'Ausgleich', russian: 'баланс/компенсация', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Sport ist ein guter Ausgleich.', examplePlural: '-' },
+                { type: 'noun', german: 'Gewohnheit', russian: 'привычка', article: 'die', plural: 'Gewohnheiten', pluralArticle: 'die', exampleSingular: 'Eine gute Gewohnheit.', examplePlural: '-' }
               ]
             }
           ],
@@ -1965,6 +2291,21 @@ export const curriculum: Curriculum = {
               question: 'Wir waschen ___ . (Мы умываемся)',
               correctAnswer: 'uns',
               explanation: 'Для wir возвратная часть — uns.'
+            },
+            {
+              id: 'a2-7-ex-3',
+              type: 'multiple-choice',
+              question: 'Как выразить важность рутины?',
+              options: ['Ich finde es wichtig, eine Routine zu haben.', 'Routine ist schlecht.', 'Ich habe keine Routine.', 'Routine machen.'],
+              correctAnswer: 'Ich finde es wichtig, eine Routine zu haben.',
+              explanation: '"Ich finde es wichtig..." — отличный способ начать аргументацию своего мнения.'
+            },
+            {
+              id: 'a2-7-ex-4',
+              type: 'fill-in-the-blank',
+              question: 'Sport ist ein guter ___ (баланс/отдых от работы).',
+              correctAnswer: 'Ausgleich',
+              explanation: 'Ausgleich — то, что помогает восстановить силы после нагрузки.'
             }
           ]
         },
@@ -2043,7 +2384,11 @@ export const curriculum: Curriculum = {
                 { type: 'adjective', german: 'interessant', russian: 'интересный', comparative: 'interessanter', superlative: 'am interessantesten', example: 'Interessant.' },
                 { type: 'adjective', german: 'langweilig', russian: 'скучный', comparative: 'langweiliger', superlative: 'am langweiligsten', example: 'Langweilig.' },
                 { type: 'adjective', german: 'schwer', russian: 'трудный', comparative: 'schwerer', superlative: 'am schwersten', example: 'Schwere Arbeit.' },
-                { type: 'adjective', german: 'leicht', russian: 'легкий', comparative: 'leichter', superlative: 'am leichtesten', example: 'Leichte Arbeit.' }
+                { type: 'adjective', german: 'leicht', russian: 'легкий', comparative: 'leichter', superlative: 'am leichtesten', example: 'Leichte Arbeit.' },
+                { type: 'noun', german: 'Herausforderung', russian: 'вызов/трудная задача', article: 'die', plural: 'Herausforderungen', pluralArticle: 'die', exampleSingular: 'Eine große Herausforderung.', examplePlural: '-' },
+                { type: 'noun', german: 'Möglichkeit', russian: 'возможность', article: 'die', plural: 'Möglichkeiten', pluralArticle: 'die', exampleSingular: 'Viele Möglichkeiten.', examplePlural: '-' },
+                { type: 'noun', german: 'Erfolg', russian: 'успех', article: 'der', plural: 'Erfolge', pluralArticle: 'die', exampleSingular: 'Viel Erfolg!', examplePlural: '-' },
+                { type: 'noun', german: 'Klima', russian: 'климат (в т.ч. в коллективе)', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Gutes Betriebsklima.', examplePlural: '-' }
               ]
             }
           ],
@@ -2059,9 +2404,24 @@ export const curriculum: Curriculum = {
             {
               id: 'a2-8-ex-2',
               type: 'fill-in-the-blank',
-              question: 'Ich habe gestern ___ . (Я вчера работал)',
-              correctAnswer: 'gearbeitet',
-              explanation: 'Partizip II глагола arbeiten — gearbeitet.'
+              question: 'Ich ___ gearbeitet. (Я работал)',
+              correctAnswer: 'habe',
+              explanation: 'Для большинства глаголов используется haben.'
+            },
+            {
+              id: 'a2-8-ex-3',
+              type: 'multiple-choice',
+              question: 'Как выразить свои предпочтения в работе?',
+              options: ['Ich suche einen Job, der Spaß macht.', 'Arbeit ist mir egal.', 'Ich habe keinen Job.', 'Job suchen.'],
+              correctAnswer: 'Ich suche einen Job, der Spaß macht.',
+              explanation: '"Я ищу работу, которая приносит удовольствие" — хорошая фраза для описания своих целей.'
+            },
+            {
+              id: 'a2-8-ex-4',
+              type: 'fill-in-the-blank',
+              question: 'Viel ___ ! (Успеха!)',
+              correctAnswer: 'Erfolg',
+              explanation: 'Erfolg — успех.'
             }
           ]
         },
@@ -2664,6 +3024,200 @@ export const curriculum: Curriculum = {
               explanation: 'Предлог seit указывает на действие, начатое в прошлом и длящееся до сих пор.'
             }
           ]
+        },
+        {
+          id: 'a2-14-recycling',
+          title: 'A2.14 Экология: Раздельный сбор мусора',
+          explanation: `
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">♻️</span> Mülltrennung в Германии
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  В Германии разделение мусора — это важная часть повседневной жизни.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="p-4 bg-blue-50 dark:bg-blue-900/10 rounded-lg border border-blue-200">
+                    <h3 class="font-bold mb-2">Зачем это нужно?</h3>
+                    <p class="text-sm">Чтобы защитить природу (die Umwelt schützen) и переработать материалы (recyceln).</p>
+                  </div>
+                  <div class="p-4 bg-green-50 dark:bg-green-900/10 rounded-lg border border-green-200">
+                    <h3 class="font-bold mb-2">Типы мусора:</h3>
+                    <ul class="text-xs space-y-1">
+                      <li>• <strong>Papier</strong> (синий контейнер): газеты, коробки.</li>
+                      <li>• <strong>Bio</strong> (коричневый): остатки еды.</li>
+                      <li>• <strong>Plastik</strong> (желтый): упаковка.</li>
+                      <li>• <strong>Restmüll</strong> (серый): всё остальное.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `,
+          vocabulary: [
+            {
+              theme: 'Экология и Переработка',
+              words: [
+                { type: 'noun', german: 'Umwelt', russian: 'окружающая среда', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Die Umwelt schützen.', examplePlural: '-' },
+                { type: 'noun', german: 'Müll', russian: 'мусор', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Müll trennen.', examplePlural: '-' },
+                { type: 'noun', german: 'Abfall', russian: 'отходы', article: 'der', plural: 'Abfälle', pluralArticle: 'die', exampleSingular: 'Biotone für Abfälle.', examplePlural: '-' },
+                { type: 'noun', german: 'Verpackung', russian: 'упаковка', article: 'die', plural: 'Verpackungen', pluralArticle: 'die', exampleSingular: 'Plastikverpackung.', examplePlural: '-' },
+                { type: 'noun', german: 'Tonne', russian: 'бак/контейнер', article: 'die', plural: 'Tonnen', pluralArticle: 'die', exampleSingular: 'Die gelbe Tonne.', examplePlural: '-' },
+                { type: 'noun', german: 'Container', russian: 'контейнер (крупный)', article: 'der', plural: 'Container', pluralArticle: 'die', exampleSingular: 'Glascontainer.', examplePlural: '-' },
+                { type: 'verb', german: 'trennen', russian: 'разделять', conjugation: 'er trennt', example: 'Wir trennen Müll.' },
+                { type: 'verb', german: 'recyceln', russian: 'перерабатывать', conjugation: 'es wird recycelt', example: 'Papier wird recycelt.' },
+                { type: 'verb', german: 'sparen', russian: 'экономить', conjugation: 'er spart', example: 'Energie sparen.' },
+                { type: 'verb', german: 'vermeiden', russian: 'избегать', conjugation: 'er vermeidet', example: 'Müll vermeiden.' },
+                { type: 'adjective', german: 'umweltfreundlich', russian: 'экологичный', comparative: 'umweltfreundlicher', superlative: 'am umweltfreundlichsten', example: 'Ein umweltfreundliches Produkt.' },
+                { type: 'adjective', german: 'nachhaltig', russian: 'устойчивый/экологичный', comparative: 'nachhaltiger', superlative: 'am nachhaltigsten', example: 'Nachhaltiges Leben.' },
+                { type: 'other', german: 'Bio-', russian: 'био-', example: 'Bioladen, Biomüll.' }
+              ]
+            }
+          ],
+          exercises: [
+            {
+              id: 'a2-14-ex-1',
+              type: 'multiple-choice',
+              question: 'Куда нужно выбрасывать старые газеты?',
+              options: ['In die Biotonne', 'In die Papiertonne', 'In den Restmüll', 'In den Wald'],
+              correctAnswer: 'In die Papiertonne',
+              explanation: 'Papier (газета) выбрасывается в синий контейнер (Papiertonne).'
+            },
+            {
+              id: 'a2-14-ex-2',
+              type: 'fill-in-the-blank',
+              question: 'Wir müssen die Umwelt ___ . (защищать)',
+              correctAnswer: 'schützen',
+            }
+          ]
+        },
+        {
+          id: 'a2-15-digital-life',
+          title: 'A2.15 Медиа: Жизнь в сети',
+          explanation: `
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">📱</span> Смартфон и социальные сети
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  Как технологии меняют наше общение.
+                </p>
+                
+                <div class="bg-muted p-4 rounded-lg">
+                  <h3 class="font-bold mb-2">Наши привычки:</h3>
+                  <ul class="text-sm space-y-1 italic">
+                    <li>• Ich checke meine E-Mails. (Я проверяю почту)</li>
+                    <li>• Ich poste Bilder auf Instagram. (Я выкладываю фото)</li>
+                    <li>• Ich bin immer "online". (Я всегда в сети)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          `,
+          vocabulary: [
+            {
+              theme: 'Цифровой мир',
+              words: [
+                { type: 'noun', german: 'Netzwerk', russian: 'сеть', article: 'das', plural: 'Netzwerke', pluralArticle: 'die', exampleSingular: 'Soziale Netzwerke.', examplePlural: '-' },
+                { type: 'noun', german: 'Bildschirm', russian: 'экран', article: 'der', plural: 'Bildschirme', pluralArticle: 'die', exampleSingular: 'Ein großer Bildschirm.', examplePlural: '-' },
+                { type: 'noun', german: 'Nachricht', russian: 'сообщение', article: 'die', plural: 'Nachrichten', pluralArticle: 'die', exampleSingular: 'Eine Nachricht schicken.', examplePlural: '-' },
+                { type: 'noun', german: 'Passwort', russian: 'пароль', article: 'das', plural: 'Passwörter', pluralArticle: 'die', exampleSingular: 'Passwort vergessen.', examplePlural: '-' },
+                { type: 'noun', german: 'Sicherheit', russian: 'безопасность', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Sicherheit im Netz.', examplePlural: '-' },
+                { type: 'noun', german: 'App', russian: 'приложение', article: 'die', plural: 'Apps', pluralArticle: 'die', exampleSingular: 'Eine nützliche App.', examplePlural: '-' },
+                { type: 'verb', german: 'nutzen', russian: 'использовать', conjugation: 'er nutzt', example: 'Das Internet nutzen.' },
+                { type: 'verb', german: 'posten', russian: 'постить', conjugation: 'er postet', example: 'Einen Kommentar posten.' },
+                { type: 'verb', german: 'löschen', russian: 'удалять', conjugation: 'er löscht', example: 'Ein Foto löшить.' },
+                { type: 'verb', german: 'hochladen', russian: 'загружать (в сеть)', conjugation: 'er lädt hoch', example: 'Videos hochladen.' },
+                { type: 'adjective', german: 'gefährlich', russian: 'опасный', comparative: 'gefährlicher', superlative: 'am gefährlichsten', example: 'Das ist gefährlich.' },
+                { type: 'adjective', german: 'nützlich', russian: 'полезный', comparative: 'nützlicher', superlative: 'am nützlichsten', example: 'Apps sind nützlich.' },
+                { type: 'other', german: 'online', russian: 'в сети', example: 'Ich bin online.' }
+              ]
+            }
+          ],
+          exercises: [
+            {
+              id: 'a2-15-ex-1',
+              type: 'multiple-choice',
+              question: 'Что нужно помнить, чтобы никто не зашел в ваш аккаунт?',
+              options: ['Das Passwort', 'Den Bildschirm', 'Das Internet', 'Die Maus'],
+              correctAnswer: 'Das Passwort',
+              explanation: 'Passwort — пароль.'
+            },
+            {
+              id: 'a2-15-ex-2',
+              type: 'fill-in-the-blank',
+              question: 'Ich ___ jeden Tag Fotos hoch. (загружаю - hochladen)',
+              correctAnswer: 'lade',
+              explanation: 'Глагол hochladen отделяемый: ich lade ... hoch.'
+            }
+          ]
+        },
+        {
+          id: 'a2-16-languages',
+          title: 'A2.16 Образование: Иностранные языки',
+          explanation: `
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">🗣️</span> Зачем учить языки?
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  Преимущества многоязычия.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="p-4 border border-border rounded-lg">
+                    <h3 class="font-bold mb-2">Плюсы (Vorteile):</h3>
+                    <p class="text-sm">Можно путешествовать и найти лучшую работу (einen besseren Job finden).</p>
+                  </div>
+                  <div class="p-4 border border-border rounded-lg">
+                    <h3 class="font-bold mb-2">Мнение:</h3>
+                    <p class="text-sm italic">"Ich finde, dass Sprachen <strong>wichtig</strong> sind."</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `,
+          vocabulary: [
+            {
+              theme: 'Языки и обучение',
+              words: [
+                { type: 'noun', german: 'Sprache', russian: 'язык', article: 'die', plural: 'Sprachen', pluralArticle: 'die', exampleSingular: 'Fremdsprache.', examplePlural: '-' },
+                { type: 'noun', german: 'Muttersprache', russian: 'родной язык', article: 'die', plural: 'Muttersprachen', pluralArticle: 'die', exampleSingular: 'Meine Muttersprache ist Russisch.', examplePlural: '-' },
+                { type: 'noun', german: 'Vorteil', russian: 'преимущество', article: 'der', plural: 'Vorteile', pluralArticle: 'die', exampleSingular: 'Ein großer Vorteil.', examplePlural: '-' },
+                { type: 'noun', german: 'Nachteil', russian: 'недостаток', article: 'der', plural: 'Nachteile', pluralArticle: 'die', exampleSingular: 'Der Nachteil ist...', examplePlural: '-' },
+                { type: 'noun', german: 'Wortschatz', russian: 'словарный запас', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Den Wortschatz erweitern.', examplePlural: '-' },
+                { type: 'noun', german: 'Aussprache', russian: 'произношение', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Gute Aussprache.', examplePlural: '-' },
+                { type: 'verb', german: 'verbessern', russian: 'улучшать', conjugation: 'er verbessert', example: 'Ich verbessere mein Deutsch.' },
+                { type: 'verb', german: 'verstehen', russian: 'понимать', conjugation: 'er versteht', example: 'Alles verstehen.' },
+                { type: 'verb', german: 'notieren', russian: 'записывать', conjugation: 'er notiert', example: 'Wörter notieren.' },
+                { type: 'verb', german: 'übersetzen', russian: 'переводить', conjugation: 'er übersetzt', example: 'Sätze übersetzen.' },
+                { type: 'adjective', german: 'wichtig', russian: 'важный', comparative: 'wichtiger', superlative: 'am wichtigsten', example: 'Es ist важно.' },
+                { type: 'adjective', german: 'fremd', russian: 'чужой/иностранный', comparative: 'fremder', superlative: 'am fremdesten', example: 'Eine fremde Sprache.' },
+                { type: 'adjective', german: 'stolz', russian: 'гордый', comparative: 'stolzer', superlative: 'am stolzesten', example: 'Ich bin stolz auf dich.' }
+              ]
+            }
+          ],
+          exercises: [
+            {
+              id: 'a2-16-ex-1',
+              type: 'multiple-choice',
+              question: 'Как называется язык, на котором вы говорили с детства?',
+              options: ['Die Muttersprache', 'Die Fremdsprache', 'Das Wort', 'Der Vorteil'],
+              correctAnswer: 'Die Muttersprache',
+              explanation: 'Muttersprache — родной язык.'
+            },
+            {
+              id: 'a2-16-ex-2',
+              type: 'fill-in-the-blank',
+              question: 'Я хочу улучшить мой немецкий: Ich will mein Deutsch ___ .',
+              correctAnswer: 'verbessern',
+              explanation: 'Verbessern — улучшать.'
+            }
+          ]
         }
       ]
 
@@ -2779,7 +3333,10 @@ export const curriculum: Curriculum = {
                 { type: 'verb', german: 'übertragen', russian: 'транслировать', conjugation: 'es überträgt', example: 'Das Spiel wird live übertragen.' },
                 { type: 'verb', german: 'veröffentlichen', russian: 'публиковать', conjugation: 'er veröffentlicht', example: 'Er veröffentlicht ein Buch.' },
                 { type: 'adjective', german: 'aktuell', russian: 'актуальный', comparative: 'aktueller', superlative: 'am aktuellsten', example: 'Aktuelle Nachrichten.' },
-                { type: 'adjective', german: 'spannend', russian: 'захватывающий', comparative: 'spannender', superlative: 'am spannendsten', example: 'Ein spannender Film.' }
+                { type: 'adjective', german: 'spannend', russian: 'захватывающий', comparative: 'spannender', superlative: 'am spannendsten', example: 'Ein spannender Film.' },
+                { type: 'noun', german: 'Glaubwürdigkeit', russian: 'достоверность', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Die Glaubwürdigkeit der Presse.', examplePlural: '-' },
+                { type: 'noun', german: 'Berichterstattung', russian: 'освещение событий', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Objektive Berichterstattung.', examplePlural: '-' },
+                { type: 'verb', german: 'beeinflussen', russian: 'влиять', conjugation: 'er beeinflusst', example: 'Medien beeinflussen uns.' }
               ]
             }
           ],
@@ -2861,7 +3418,9 @@ export const curriculum: Curriculum = {
                 { type: 'verb', german: 'kopieren', russian: 'копировать', conjugation: 'es wird kopiert', example: 'Texte werden kopiert.' },
                 { type: 'verb', german: 'löschen', russian: 'удалять', conjugation: 'es wird gelöscht', example: 'Die Nachricht wird gelöscht.' },
                 { type: 'adjective', german: 'digital', russian: 'цифровой', comparative: '-', superlative: '-', example: 'Die digitale Welt.' },
-                { type: 'adjective', german: 'virtuell', russian: 'виртуальный', comparative: '-', superlative: '-', example: 'Ein virtuelles Meeting.' }
+                { type: 'adjective', german: 'virtuell', russian: 'виртуальный', comparative: '-', superlative: '-', example: 'Ein virtuelles Meeting.' },
+                { type: 'noun', german: 'Datenschutz', russian: 'защита данных', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Datenschutz ist wichtig.', examplePlural: '-' },
+                { type: 'noun', german: 'Sucht', russian: 'зависимость', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Internetsucht.', examplePlural: '-' }
               ]
             }
           ],
@@ -2882,8 +3441,7 @@ export const curriculum: Curriculum = {
               explanation: 'С существительным в единственном числе (die Datei) используется форма "wird".'
             }
           ]
-        }
-        ,
+        },
         {
           id: 'b1-3-umwelt-natur',
           title: 'B1.3 Экология: Сожаления о прошлом',
@@ -2933,7 +3491,9 @@ export const curriculum: Curriculum = {
                 { type: 'verb', german: 'schonen', russian: 'беречь', conjugation: 'er schont', example: 'Die Natur schonen.' },
                 { type: 'verb', german: 'verbrauchen', russian: 'потреблять', conjugation: 'er verbraucht', example: 'Viel Energie verbrauchen.' },
                 { type: 'adjective', german: 'nachhaltig', russian: 'устойчивый/экологичный', comparative: 'nachhaltiger', superlative: 'am nachhaltigsten', example: 'Ein nachhaltiger Lebensstil.' },
-                { type: 'adjective', german: 'umweltschädlich', russian: 'вредный для среды', comparative: 'umweltschädlicher', superlative: 'am umweltschädlichsten', example: 'Plastik ist umweltschädlich.' }
+                { type: 'adjective', german: 'umweltschädlich', russian: 'вредный для среды', comparative: 'umweltschädlicher', superlative: 'am umweltschädlichsten', example: 'Plastik ist umweltschädlich.' },
+                { type: 'noun', german: 'Verantwortung', russian: 'ответственность', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Verantwortung übernehmen.', examplePlural: '-' },
+                { type: 'verb', german: 'handeln', russian: 'действовать', conjugation: 'wir müssen handeln', example: 'Es ist Zeit zu handeln.' }
               ]
             }
           ],
@@ -3566,6 +4126,198 @@ export const curriculum: Curriculum = {
               correctAnswer: 'Ich möchte ein Zimmer buchen',
               options: ['Ich', 'möchte', 'ein', 'Zimmer', 'buchen'],
               explanation: 'Модальный глагол на втором месте, инфинитив в конце.'
+            }
+          ]
+        },
+        {
+          id: 'b1-13-umwelt-global',
+          title: 'B1.13 Экология: Глобальные проблемы',
+          explanation: `
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">🌡️</span> Изменение климата и аргументация
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  На уровне B1 мы учимся обсуждать сложные проблемы и приводить аргументы.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="p-4 bg-red-50 dark:bg-red-900/10 rounded-lg border border-red-200">
+                    <h3 class="font-bold mb-2">Проблемы (Probleme):</h3>
+                    <ul class="text-xs space-y-1">
+                      <li>• <strong>Erderwärmung</strong>: Повышение температуры.</li>
+                      <li>• <strong>Artensterben</strong>: Исчезновение видов.</li>
+                      <li>• <strong>Ressourcenknappheit</strong>: Дефицит ресурсов.</li>
+                    </ul>
+                  </div>
+                  <div class="p-4 bg-green-50 dark:bg-green-900/10 rounded-lg border border-green-200">
+                    <h3 class="font-bold mb-2">Аргументация:</h3>
+                    <p class="text-xs italic">"Einerseits müssen wir Energie sparen, andererseits ist das oft teuer."</p>
+                    <p class="text-[10px] mt-1">(С одной стороны... с другой стороны...)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `,
+          vocabulary: [
+            {
+              theme: 'Глобальная экология',
+              words: [
+                { type: 'noun', german: 'Erwärmung', russian: 'потепление', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Die globale Erwärmung.', examplePlural: '-' },
+                { type: 'noun', german: 'Umweltverschmutzung', russian: 'загрязнение среды', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Folgen der Umweltverschmutzung.', examplePlural: '-' },
+                { type: 'noun', german: 'Konsum', russian: 'потребление', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Nachhaltiger Konsum.', examplePlural: '-' },
+                { type: 'noun', german: 'Verantwortung', russian: 'ответственность', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Verantwortung übernehmen.', examplePlural: '-' },
+                { type: 'verb', german: 'schützen', russian: 'защищать', conjugation: 'er schützt', example: 'Die Meere schützen.' },
+                { type: 'verb', german: 'zerstören', russian: 'разрушать', conjugation: 'er zerstört', example: 'Den Lebensraum zerstören.' },
+                { type: 'verb', german: 'handeln', russian: 'действовать', conjugation: 'wir müssen handeln', example: 'Es ist Zeit zu handeln.' },
+                { type: 'adjective', german: 'global', russian: 'глобальный', comparative: '-', superlative: '-', example: 'Globale Probleme.' },
+                { type: 'adjective', german: 'nachhaltig', russian: 'устойчивый', comparative: 'nachhaltiger', superlative: 'am nachhaltigsten', example: 'Nachhaltige Entwicklung.' },
+                { type: 'other', german: 'einerseits', russian: 'с одной стороны', example: 'Einerseits ist es gut...' },
+                { type: 'other', german: 'andererseits', russian: 'с другой стороны', example: '...andererseits ist es schwer.' }
+              ]
+            }
+          ],
+          exercises: [
+            {
+              id: 'b1-13-ex-1',
+              type: 'multiple-choice',
+              question: 'Как переводится "Umweltverschmutzung"?',
+              options: ['Защита среды', 'Загрязнение среды', 'Изменение климата', 'Потребление'],
+              correctAnswer: 'Загрязнение среды',
+              explanation: 'Umwelt (среда) + Verschmutzung (загрязнение).'
+            },
+            {
+              id: 'b1-13-ex-2',
+              type: 'fill-in-the-blank',
+              question: '___ мы должны действовать. (С одной стороны)',
+              correctAnswer: 'Einerseits',
+              explanation: 'Einerseits — с одной стороны (начало аргументации).'
+            }
+          ]
+        },
+        {
+          id: 'b1-14-medien-gesellschaft',
+          title: 'B1.14 Медиа: Влияние СМИ',
+          explanation: `
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">📺</span> Роль медиа в обществе
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  Медиа не только развлекают, но и формируют общественное мнение.
+                </p>
+                
+                <div class="bg-muted p-4 rounded-lg">
+                  <h3 class="font-bold mb-2">Выражение мнения:</h3>
+                  <ul class="text-sm space-y-2">
+                    <li>• <strong>Meiner Meinung nach</strong>... (По моему мнению)</li>
+                    <li>• <strong>Ich bin davon überzeugt, dass</strong>... (Я убежден, что...)</li>
+                    <li>• <strong>Es spielt eine большая Rolle, dass</strong>... (Играет большую роль то, что...)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          `,
+          vocabulary: [
+            {
+              theme: 'Медиа и Общество',
+              words: [
+                { type: 'noun', german: 'Meinung', russian: 'мнение', article: 'die', plural: 'Meinungen', pluralArticle: 'die', exampleSingular: 'Meine eigene Meinung.', examplePlural: 'Verschiedene Meinungen.' },
+                { type: 'noun', german: 'Einfluss', russian: 'влияние', article: 'der', plural: 'Einflüsse', pluralArticle: 'die', exampleSingular: 'Der Einfluss der Medien.', examplePlural: '-' },
+                { type: 'noun', german: 'Quelle', russian: 'источник', article: 'die', plural: 'Quellen', pluralArticle: 'die', exampleSingular: 'Eine sichere Quelle.', examplePlural: '-' },
+                { type: 'noun', german: 'Manipulation', russian: 'манипуляция', article: 'die', plural: 'Manipulationen', pluralArticle: 'die', exampleSingular: 'Gefahr der Manipulation.', examplePlural: '-' },
+                { type: 'verb', german: 'informieren (sich)', russian: 'информировать(ся)', conjugation: 'я informiere mich', example: 'Ich informiere mich im Internet.' },
+                { type: 'verb', german: 'beeinflussen', russian: 'влиять', conjugation: 'er beeinflusst', example: 'Werbung beeinflusst uns.' },
+                { type: 'verb', german: 'glauben', russian: 'верить', conjugation: 'er glaubt', example: 'Nicht alles glauben.' },
+                { type: 'adjective', german: 'kritisch', russian: 'критический', comparative: 'kritischer', superlative: 'am kritischsten', example: 'Kritisch denken.' },
+                { type: 'adjective', german: 'öffentlich', russian: 'общественный', comparative: '-', superlative: '-', example: 'Die öffentliche Meinung.' },
+                { type: 'other', german: 'davon', russian: 'об этом (указ. местоим.)', example: 'Ich bin davon überzeugt.' }
+              ]
+            }
+          ],
+          exercises: [
+            {
+              id: 'b1-14-ex-1',
+              type: 'multiple-choice',
+              question: 'Как сказать "По моему мнению"?',
+              options: ['Ich meine nach', 'Meiner Meinung nach', 'In meine Meinung', 'Von meiner Meinung'],
+              correctAnswer: 'Meiner Meinung nach',
+              explanation: 'Meiner Meinung nach — устойчивое выражение (Meinung в Dativ).'
+            },
+            {
+              id: 'b1-14-ex-2',
+              type: 'fill-in-the-blank',
+              question: 'Ich bin ___ überzeugt, dass er recht hat. (убежден в этом)',
+              correctAnswer: 'davon',
+              explanation: 'Davon überzeugt sein — быть убежденным в чем-то.'
+            }
+          ]
+        },
+        {
+          id: 'b1-15-bildungssystem',
+          title: 'B1.15 Образование: Система обучения',
+          explanation: `
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">🎓</span> Школа и Университет в Германии
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  Образование — это процесс, который длится всю жизнь (Lebenslanges Lernen).
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div class="p-4 border border-border rounded-lg">
+                    <h3 class="font-bold mb-2">Типы школ:</h3>
+                    <ul class="text-xs space-y-1">
+                      <li>• <strong>Gymnasium</strong>: путь к вузу.</li>
+                      <li>• <strong>Realschule</strong>: среднее образование.</li>
+                      <li>• <strong>Berufsschule</strong>: проф. обучение.</li>
+                    </ul>
+                  </div>
+                  <div class="p-4 border border-border rounded-lg">
+                    <h3 class="font-bold mb-2">Обсуждение:</h3>
+                    <p class="text-xs italic">"Ist ein Studium сегодня ещё notwendig?"</p>
+                    <p class="text-xs italic">"Welche Vorteile hat eine Ausbildung?"</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `,
+          vocabulary: [
+            {
+              theme: 'Образование и Наука',
+              words: [
+                { type: 'noun', german: 'Abschluss', russian: 'окончание (учеб.зав.)', article: 'der', plural: 'Abschlüsse', pluralArticle: 'die', exampleSingular: 'Einen Abschluss machen.', examplePlural: '-' },
+                { type: 'noun', german: 'Chance', russian: 'шанс/возможность', article: 'die', plural: 'Chancen', pluralArticle: 'die', exampleSingular: 'Bessere Chancen на работе.', examplePlural: '-' },
+                { type: 'noun', german: 'Wissen', russian: 'знание', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Sein Wissen erweitern.', examplePlural: '-' },
+                { type: 'noun', german: 'Wettbewerb', russian: 'конкуренция/соревнование', article: 'der', plural: 'Wettbewerbe', pluralArticle: 'die', exampleSingular: 'Internationaler Wettbewerb.', examplePlural: '-' },
+                { type: 'verb', german: 'fördern', russian: 'способствовать/поддерживать', conjugation: 'er fördert', example: 'Talente fördern.' },
+                { type: 'verb', german: 'fordern', russian: 'требовать', conjugation: 'er fordert', example: 'Leistung fordern.' },
+                { type: 'verb', german: 'absolvieren', russian: 'оканчивать/проходить', conjugation: 'er absolviert', example: 'Ein Praktikum absolvieren.' },
+                { type: 'adjective', german: 'akademisch', russian: 'академический', comparative: '-', superlative: '-', example: 'Ein akademischer Grad.' },
+                { type: 'adjective', german: 'lebenslang', russian: 'пожизненный', comparative: '-', superlative: '-', example: 'Lebenslanges Lernen.' },
+                { type: 'other', german: 'zwar', russian: 'хотя/правда', example: 'Das ist zwar schwer, но...' }
+              ]
+            }
+          ],
+          exercises: [
+            {
+              id: 'b1-15-ex-1',
+              type: 'multiple-choice',
+              question: 'Что означает "Lebenslanges Lernen"?',
+              options: ['Учеба в школе', 'Учеба всю жизнь', 'Быстрая учеба', 'Сложная учеба'],
+              correctAnswer: 'Учеба всю жизнь',
+              explanation: 'Lebenslang — пожизненный/всю жизнь.'
+            },
+            {
+              id: 'b1-15-ex-2',
+              type: 'fill-in-the-blank',
+              question: 'Talente ___. (поддерживать/способствовать)',
+              correctAnswer: 'fördern',
+              explanation: 'Fördern — поддерживать развитие.'
             }
           ]
         }
@@ -4256,6 +5008,197 @@ export const curriculum: Curriculum = {
               question: 'Компьютер не только быстрый, ___ и надежный.',
               correctAnswer: 'sondern auch',
               explanation: 'Конструкция: nicht nur ..., sondern auch.'
+            }
+          ]
+        },
+        {
+          id: 'b2-11-umwelt-wirtschaft',
+          title: 'B2.11 Экология: Экономика и Политика',
+          explanation: `
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">🌱</span> Corporate Social Responsibility (CSR)
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  На уровне B2 мы обсуждаем экологию не только как личный выбор, но и как часть бизнес-стратегии и политики.
+                </p>
+                
+                <div class="space-y-4">
+                  <div class="p-4 border-l-4 border-primary bg-primary/5 rounded-r-lg">
+                    <h3 class="font-bold mb-1 text-sm">Сложные союзы (Konzessive Sätze):</h3>
+                    <p class="text-sm italic">"<strong>Obwohl</strong> Umweltschutz teuer ist, investieren viele Firmen in CSR."</p>
+                    <p class="text-sm italic">"<strong>Trotz</strong> hoher Kosten lohnt sich Nachhaltigkeit."</p>
+                  </div>
+                  
+                  <div class="p-4 bg-muted rounded-lg">
+                    <h3 class="font-bold mb-2 text-sm">Аргументация в бизнесе:</h3>
+                    <p class="text-xs mb-1">• "Man darf nicht vergessen, dass..." (Нельзя забывать, что...)</p>
+                    <p class="text-xs mb-1">• "Daraus lässt sich schließen, dass..." (Из этого можно сделать вывод, что...)</p>
+                    <p class="text-xs">• "Im Gegensatz dazu steht..." (В противоположность этому стоит...)</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `,
+          vocabulary: [
+            {
+              theme: 'Экология и Бизнес',
+              words: [
+                { type: 'noun', german: 'Nachhaltigkeitsbericht', russian: 'отчет об устойчивом развитии', article: 'der', plural: 'Nachhaltigkeitsberichte', pluralArticle: 'die', exampleSingular: 'Einen Bericht veröffentlichen.', examplePlural: '-' },
+                { type: 'noun', german: 'Ressourceneffizienz', russian: 'ресурсоэффективность', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Steigerung der Ressourceneffizienz.', examplePlural: '-' },
+                { type: 'noun', german: 'Lieferkette', russian: 'цепочка поставок', article: 'die', plural: 'Lieferketten', pluralArticle: 'die', exampleSingular: 'Transparenz in der Lieferkette.', examplePlural: '-' },
+                { type: 'noun', german: 'Emission', russian: 'выброс/эмиссия', article: 'die', plural: 'Emissionen', pluralArticle: 'die', exampleSingular: 'CO2-Emissionen reduzieren.', examplePlural: '-' },
+                { type: 'verb', german: 'umsetzen', russian: 'реализовывать/внедрять', conjugation: 'er setzt um', example: 'Maßnahmen umsetzen.' },
+                { type: 'verb', german: 'verpflichten (sich)', russian: 'обязаться', conjugation: 'ich verpflichte mich', example: 'Wir verpflichten uns zum Klimsschutz.' },
+                { type: 'verb', german: 'fördern', russian: 'стимулировать/поддерживать', conjugation: 'er fördert', example: 'Erneuerbare Energien fördern.' },
+                { type: 'adjective', german: 'umweltbewusst', russian: 'сознательный в вопросах среды', comparative: 'umweltbewusster', superlative: 'am umweltbewusstesten', example: 'Umweltbewusstes Handeln.' },
+                { type: 'adjective', german: 'profitabel', russian: 'прибыльный', comparative: 'profitabler', superlative: 'am profitabelsten', example: 'Nachhaltigkeit kann profitabel sein.' },
+                { type: 'other', german: 'obwohl', russian: 'хотя', example: 'Obwohl es schwer ist...' }
+              ]
+            }
+          ],
+          exercises: [
+            {
+              id: 'b2-11-ex-1',
+              type: 'multiple-choice',
+              question: 'Что такое "Lieferkette"?',
+              options: ['Цепочка поставок', 'Заводская труба', 'Магазинная полка', 'Электрическая сеть'],
+              correctAnswer: 'Цепочка поставок',
+              explanation: 'Liefer- (доставка) + Kette (цепь).'
+            },
+            {
+              id: 'b2-11-ex-2',
+              type: 'fill-in-the-blank',
+              question: '___ (Хотя) Umweltschutz wichtig ist, wird oft zu wenig getan.',
+              correctAnswer: 'Obwohl',
+              explanation: 'Obwohl вводит уступительное придаточное предложение.'
+            }
+          ]
+        },
+        {
+          id: 'b2-12-medien-ethik',
+          title: 'B2.12 Медиа: Этика и ИИ',
+          explanation: `
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">🤖</span> Этические вызовы цифрового мира
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  Обсуждение искусственного интеллекта, защиты данных и ответственности алгоритмов.
+                </p>
+                
+                <div class="p-4 bg-muted rounded-lg border">
+                  <h3 class="font-bold mb-2 text-sm">Спекуляции (Hypothetisches):</h3>
+                  <p class="text-sm italic">"Was <strong>würde</strong> passieren, wenn Algorithmen alle Entscheidungen treffen <strong>würden</strong>?"</p>
+                  <p class="text-xs text-muted-foreground mt-1">(Что бы случилось, если бы...)</p>
+                </div>
+                
+                <div class="mt-4 p-4 border border-blue-200 bg-blue-50/50 rounded-lg">
+                  <h3 class="font-bold mb-2 text-sm text-blue-800">Аргументация: Pro & Contra</h3>
+                  <p class="text-[11px] font-medium">• "Ein entscheidender Punkt ist..." (Решающий момент это...)</p>
+                  <p class="text-[11px] font-medium">• "Im Vergleich dazu..." (По сравнению с этим...)</p>
+                  <p class="text-[11px] font-medium">• "Das führt zu der Frage, ob..." (Это ведет к вопросу, ... ли...)</p>
+                </div>
+              </div>
+            </div>
+          `,
+          vocabulary: [
+            {
+              theme: 'Этика и Технологии',
+              words: [
+                { type: 'noun', german: 'Datenschutz', russian: 'защита данных', article: 'der', plural: '-', pluralArticle: '-', exampleSingular: 'Gesetze zum Datenschutz.', examplePlural: '-' },
+                { type: 'noun', german: 'Algorithmus', russian: 'алгоритм', article: 'der', plural: 'Algorithmen', pluralArticle: 'die', exampleSingular: 'Ein Google-Algorithmus.', examplePlural: '-' },
+                { type: 'noun', german: 'Urheberrecht', russian: 'авторское право', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Das Urheberrecht beachten.', examplePlural: '-' },
+                { type: 'noun', german: 'Überwachung', russian: 'наблюдение/слежка', article: 'die', plural: '-', pluralArticle: '-', exampleSingular: 'Totale Überwachung.', examplePlural: '-' },
+                { type: 'verb', german: 'regulieren', russian: 'регулировать', conjugation: 'der Staat reguliert', example: 'Den Markt regulieren.' },
+                { type: 'verb', german: 'manipulieren', russian: 'манипулировать', conjugation: 'er manipuliert', example: 'Daten manipulieren.' },
+                { type: 'verb', german: 'bedrohen', russian: 'угрожать', conjugation: 'KI bedroht Jobs', example: 'Die Existenz bedrohen.' },
+                { type: 'adjective', german: 'ethisch', russian: 'этический', comparative: 'ethischer', superlative: 'am ethischsten', example: 'Ethische Bedenken.' },
+                { type: 'adjective', german: 'transparent', russian: 'прозрачный', comparative: 'transparenter', superlative: 'am transparentsten', example: 'Transparentes Verfahren.' },
+                { type: 'other', german: 'inwiefern', russian: 'в какой мере/насколько', example: 'Inwiefern ist das gut?' }
+              ]
+            }
+          ],
+          exercises: [
+            {
+              id: 'b2-12-ex-1',
+              type: 'multiple-choice',
+              question: 'Как переводится "Datenschutz"?',
+              options: ['Защита данных', 'Хранение данных', 'Потеря данных', 'Продажа данных'],
+              correctAnswer: 'Защита данных',
+              explanation: 'Daten (данные) + Schutz (защита).'
+            },
+            {
+              id: 'b2-12-ex-2',
+              type: 'fill-in-the-blank',
+              question: 'Das führt zu der Frage, ___ (в какой мере) das ethisch ist.',
+              correctAnswer: 'inwiefern',
+              explanation: 'Inwiefern — в какой мере (часто используется в дискуссиях).'
+            }
+          ]
+        },
+        {
+          id: 'b2-13-bildung-zukunft',
+          title: 'B2.13 Образование: Будущее обучения',
+          explanation: `
+            <div class="space-y-6">
+              <div class="bg-card p-6 rounded-xl border shadow-sm">
+                <h2 class="font-headline text-2xl font-bold mb-4 flex items-center gap-2">
+                  <span class="text-primary">🎓</span> Lifelong Learning & Digital Bildung
+                </h2>
+                <p class="text-lg mb-4 text-muted-foreground">
+                  Современное образование требует гибкости и постоянного обновления навыков.
+                </p>
+                
+                <div class="bg-muted p-4 rounded-lg">
+                  <h3 class="font-bold mb-2 text-sm text-primary">Субстантивные формы (Nominalisierung):</h3>
+                  <p class="text-xs mb-2">На B2 мы часто превращаем глаголы в существительные для более научного стиля:</p>
+                  <p class="text-sm italic">"Das <strong>Lernen</strong> hört nie auf." (Процесс обучения не прекращается)</p>
+                  <p class="text-sm italic">"Durch ständiges <strong>Fortbilden</strong> bleibt man kompetent." (Благодаря постоянному повышению квалификации...)</p>
+                </div>
+                
+                <div class="p-4 border border-border rounded-lg mt-4">
+                  <h3 class="font-bold mb-2 text-sm text-foreground">Дискуссия:</h3>
+                  <p class="text-[11px] font-medium italic">"Meiner Einschätzung nach wird das klassische Studium durch Online-Kurse дополняться."</p>
+                  <p class="text-[10px] text-muted-foreground mt-1">(По моей оценке классическое обучение будет дополняться онлайн-курсами)</p>
+                </div>
+              </div>
+            </div>
+          `,
+          vocabulary: [
+            {
+              theme: 'Образование будущего',
+              words: [
+                { type: 'noun', german: 'Fortbildung', russian: 'повышение квалификации', article: 'die', plural: 'Fortbildungen', pluralArticle: 'die', exampleSingular: 'Eine Fortbildung machen.', examplePlural: '-' },
+                { type: 'noun', german: 'Kompetenz', russian: 'компетенция/навык', article: 'die', plural: 'Kompetenzen', pluralArticle: 'die', exampleSingular: 'Soziale Kompetenzen.', examplePlural: '-' },
+                { type: 'noun', german: 'Fernstudium', russian: 'дистанционное обучение', article: 'das', plural: '-', pluralArticle: '-', exampleSingular: 'Ein Fernstudium absolvieren.', examplePlural: '-' },
+                { type: 'noun', german: 'Voraussetzung', russian: 'условие/предпосылка', article: 'die', plural: 'Voraussetzungen', pluralArticle: 'die', exampleSingular: 'Wichtige Voraussetzungen.', examplePlural: '-' },
+                { type: 'verb', german: 'spezialisieren (sich)', russian: 'специализироваться', conjugation: 'ich spezialisiere mich auf', example: 'Auf IT spezialisieren.' },
+                { type: 'verb', german: 'erwerben', russian: 'приобретать (знания)', conjugation: 'er erwirbt', example: 'Wissen erwerben.' },
+                { type: 'verb', german: 'vermitteln', russian: 'передавать (знания)', conjugation: 'er vermittelt', example: 'Wissen vermitteln.' },
+                { type: 'adjective', german: 'flexibel', russian: 'гибкий', comparative: 'flexibler', superlative: 'am flexibelsten', example: 'Flexibles Lernen.' },
+                { type: 'adjective', german: 'praxisorientiert', russian: 'практико-ориентированный', comparative: '-', superlative: '-', example: 'Praxisorientierte Ausbildung.' },
+                { type: 'other', german: 'meiner Einschätzung nach', russian: 'по моей оценке/мнению', example: 'Meiner Einschätzung nach...' }
+              ]
+            }
+          ],
+          exercises: [
+            {
+              id: 'b2-13-ex-1',
+              type: 'multiple-choice',
+              question: 'Что означает "Fortbildung"?',
+              options: ['Начало учебы', 'Бросание учебы', 'Повышение квалификации', 'Экзамен'],
+              correctAnswer: 'Повышение квалификации',
+              explanation: 'Fort (дальше) + Bildung (образование).'
+            },
+            {
+              id: 'b2-13-ex-2',
+              type: 'fill-in-the-blank',
+              question: 'Wissen ___ . (передавать знания)',
+              correctAnswer: 'vermitteln',
+              explanation: 'Vermitteln — посредничать или передавать (знания, опыт).'
             }
           ]
         }
