@@ -92,7 +92,7 @@ export default function DashboardPage() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 items-stretch">
         <GlobalVocabularyTrainer words={allLearnedWords} />
 
         <Card className="flex flex-col bg-gradient-to-br from-primary/5 via-transparent to-transparent border-primary/20 shadow-xl relative overflow-hidden group">

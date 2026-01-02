@@ -4,6 +4,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Topic } from '@/lib/types';
 import { useUserProgress } from '@/hooks/use-user-progress';
+import { GenerateLessonSummaryOutput } from '@/ai/flows/generate-lesson-summary';
 import { ExerciseEngine } from './exercise-engine';
 import { Timer } from './timer';
 import { Button } from './ui/button';
@@ -23,6 +24,7 @@ export function SpacedRepetitionWrapper({ topic }: { topic: Topic }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isReadyForReview, setIsReadyForReview] = useState(false);
   const [nextReviewDate, setNextReviewDate] = useState<Date | null>(null);
+  const [lessonSummary, setLessonSummary] = useState<GenerateLessonSummaryOutput | null>(null);
 
   const getRepetitionState = useCallback((): RepetitionState => {
     try {
@@ -37,7 +39,7 @@ export function SpacedRepetitionWrapper({ topic }: { topic: Topic }) {
   useEffect(() => {
     const state = getRepetitionState();
     setRepetitionState(state);
-    
+
     if (state.nextReviewDate) {
       const reviewDate = new Date(state.nextReviewDate);
       setNextReviewDate(reviewDate);
@@ -49,7 +51,11 @@ export function SpacedRepetitionWrapper({ topic }: { topic: Topic }) {
     setIsLoading(false);
   }, [getRepetitionState]);
 
-  const onMastered = useCallback(() => {
+  const onMastered = useCallback((summary?: GenerateLessonSummaryOutput) => {
+    if (summary) {
+      setLessonSummary(summary);
+    }
+
     const nextReviewDate = new Date();
     nextReviewDate.setDate(nextReviewDate.getDate() + 1); // Simple 1 day interval
 
@@ -74,21 +80,21 @@ export function SpacedRepetitionWrapper({ topic }: { topic: Topic }) {
     setIsReadyForReview(true);
     setIsLoading(false);
   };
-  
+
   const handleReviewNow = () => {
-     setIsReadyForReview(true);
+    setIsReadyForReview(true);
   }
 
   const getNextTopic = () => {
-      const currentLevel = curriculum.levels.find(level => level.topics.some(t => t.id === topic.id));
-      if (!currentLevel) return null;
+    const currentLevel = curriculum.levels.find(level => level.topics.some(t => t.id === topic.id));
+    if (!currentLevel) return null;
 
-      const currentTopicIndex = currentLevel.topics.findIndex(t => t.id === topic.id);
-      if (currentTopicIndex > -1 && currentTopicIndex < currentLevel.topics.length - 1) {
-          const nextTopic = currentLevel.topics[currentTopicIndex + 1];
-          return `/${currentLevel.id}/${nextTopic.id}`;
-      }
-      return null;
+    const currentTopicIndex = currentLevel.topics.findIndex(t => t.id === topic.id);
+    if (currentTopicIndex > -1 && currentTopicIndex < currentLevel.topics.length - 1) {
+      const nextTopic = currentLevel.topics[currentTopicIndex + 1];
+      return `/${currentLevel.id}/${nextTopic.id}`;
+    }
+    return null;
   }
 
   const nextTopicUrl = getNextTopic();
@@ -105,28 +111,50 @@ export function SpacedRepetitionWrapper({ topic }: { topic: Topic }) {
     return (
       <Card>
         <CardContent className="p-6 text-center">
-            <Brain className="mx-auto h-16 w-16 text-primary bg-primary/10 rounded-full p-3 mb-4" />
-            <h3 className="text-2xl font-bold text-foreground font-headline">Отличная работа!</h3>
-            <p className="mt-2 text-muted-foreground mb-6">Чтобы знания лучше усвоились, мозгу нужен отдых. <br />Возвращайтесь к этой теме позже для закрепления.</p>
-            
-            <div className="flex justify-center my-8">
-                <Timer targetDate={nextReviewDate} />
-            </div>
+          <Brain className="mx-auto h-16 w-16 text-primary bg-primary/10 rounded-full p-3 mb-4" />
+          <h3 className="text-2xl font-bold text-foreground font-headline">Отличная работа!</h3>
+          <p className="mt-2 text-muted-foreground mb-6">Чтобы знания лучше усвоились, мозгу нужен отдых. <br />Возвращайтесь к этой теме позже для закрепления.</p>
 
-            <div className="flex gap-4 justify-center">
-                <Button onClick={handleReviewNow} variant="default">Все равно повторить</Button>
-                {nextTopicUrl && (
-                    <Button asChild variant="secondary">
-                        <Link href={nextTopicUrl}>
-                            Следующая тема <SkipForward className="ml-2 h-4 w-4" />
-                        </Link>
-                    </Button>
+          <div className="flex justify-center my-8">
+            <Timer targetDate={nextReviewDate} />
+          </div>
+
+          {lessonSummary && (
+            <div className="max-w-2xl mx-auto mb-10 text-left space-y-6 animate-in slide-in-from-bottom-4 duration-500">
+              <div className="bg-primary/5 border border-primary/10 rounded-2xl p-6 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-5">
+                  <Brain className="h-12 w-12" />
+                </div>
+                <h4 className="text-xl font-bold font-headline mb-3 text-primary">Анализ вашей тренировки</h4>
+                <div className="prose prose-sm dark:prose-invert" dangerouslySetInnerHTML={{ __html: lessonSummary.analysis }} />
+              </div>
+
+              <div className="bg-muted/50 border rounded-2xl p-6">
+                <h4 className="text-xl font-bold font-headline mb-3">Рекомендации ИИ</h4>
+                <div className="prose prose-sm dark:prose-invert" dangerouslySetInnerHTML={{ __html: lessonSummary.recommendations }} />
+                {lessonSummary.shouldRepeat && (
+                  <div className="mt-4 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg text-yellow-700 dark:text-yellow-400 text-sm font-medium">
+                    💡 ИИ рекомендует пройти эту тему еще раз для лучшего закрепления.
+                  </div>
                 )}
-                <Button onClick={handleReset} variant="outline">
-                    <RefreshCw className="mr-2 h-4 w-4" />
-                    Начать заново
-                </Button>
+              </div>
             </div>
+          )}
+
+          <div className="flex gap-4 justify-center">
+            <Button onClick={handleReviewNow} variant="default">Все равно повторить</Button>
+            {nextTopicUrl && (
+              <Button asChild variant="secondary">
+                <Link href={nextTopicUrl}>
+                  Следующая тема <SkipForward className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            )}
+            <Button onClick={handleReset} variant="outline">
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Начать заново
+            </Button>
+          </div>
         </CardContent>
       </Card>
     );

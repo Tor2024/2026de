@@ -296,30 +296,39 @@ export function GlobalVocabularyTrainer({ words }: { words: VocabularyWord[] }) 
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <Card className="bg-gradient-to-br from-card to-muted/30">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-3">
-            <div className="flex-shrink-0 rounded-full bg-primary/10 p-3 text-primary">
-              <BrainCircuit className="h-6 w-6" />
+      <Card className="flex flex-col bg-gradient-to-br from-primary/5 via-transparent to-transparent border-primary/20 shadow-xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 p-8 opacity-5">
+          <BrainCircuit className="h-32 w-32" />
+        </div>
+        <CardHeader className="relative z-10">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <BrainCircuit className="h-6 w-6 text-primary" />
             </div>
-            <div>
-              <h2 className="text-2xl font-bold font-headline">Словарный тренажер</h2>
-              <p className="text-sm font-normal text-muted-foreground">Повторяйте все изученные слова в одном месте</p>
-            </div>
-          </CardTitle>
+            <span className="text-xs font-bold uppercase tracking-widest text-primary">Словарный тренажер</span>
+          </div>
+          <CardTitle className="text-3xl font-headline font-bold">Тренажер слов</CardTitle>
+          <CardDescription className="text-base">
+            Повторяйте все изученные слова в одном месте
+          </CardDescription>
         </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">Слов для изучения: <span className="font-bold text-primary">{wordsForTraining.length}</span> из <span className="font-bold">{words.length}</span>. Регулярное повторение - ключ к успеху!</p>
+        <CardContent className="flex-grow flex flex-col justify-center relative z-10 py-6">
+          <p className="text-muted-foreground">
+            Слов для изучения: <span className="font-bold text-primary">{wordsForTraining.length}</span> из <span className="font-bold">{words.length}</span>.
+          </p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Регулярное повторение — ключ к успеху!
+          </p>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="relative z-10 pb-8">
           <DialogTrigger asChild>
-            <Button className="w-full" disabled={words.length === 0}>
+            <Button size="lg" className="w-full h-14 text-lg shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform" disabled={words.length === 0}>
               {words.length > 0 ? "Начать тренировку" : "Сначала пройдите урок"}
             </Button>
           </DialogTrigger>
         </CardFooter>
       </Card>
-      {renderContent()}
+      {isOpen && renderContent()}
     </Dialog>
   );
 }

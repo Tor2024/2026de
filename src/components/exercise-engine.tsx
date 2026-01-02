@@ -5,6 +5,7 @@ import type { Topic, UserVocabularyWord, SM2State, Exercise, VocabularyWord } fr
 import { generateAdaptiveExercise, AdaptiveExerciseOutput } from "@/ai/flows/adaptive-exercise-generation";
 import { verifyAnswer } from "@/ai/flows/verify-answer";
 import { generateFeedback } from "@/ai/flows/generate-feedback";
+import { generateLessonSummary, GenerateLessonSummaryOutput } from "@/ai/flows/generate-lesson-summary";
 import { updateSM2State } from "@/lib/sm2";
 import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { Button } from "./ui/button";
@@ -54,7 +55,7 @@ type ExerciseHistoryItem = {
 type ExerciseEngineProps = {
   topic?: Topic; // Make topic optional
   customWords?: UserVocabularyWord[]; // New prop
-  onMastered: () => void;
+  onMastered: (summary?: GenerateLessonSummaryOutput) => void;
   onWordUpdate?: (wordId: string, newState: SM2State) => void;
 }
 
@@ -72,6 +73,7 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [finalFeedback, setFinalFeedback] = useState<string | null>(null);
+  const [lessonSummary, setLessonSummary] = useState<GenerateLessonSummaryOutput | null>(null);
   const [apiError, setApiError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -351,11 +353,50 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
       else if (nextStep === 'mastered') hasContent = true; // Always valid end
 
       if (hasContent) {
+        if (nextStep === 'mastered') {
+          handleFinishLesson();
+          return;
+        }
         setCurrentStep(nextStep);
         return;
       }
     }
   }
+
+  const handleFinishLesson = async () => {
+    setCurrentStep('loading');
+    setIsGenerating(true);
+    try {
+      let summary: GenerateLessonSummaryOutput | undefined;
+      if (exerciseHistory.length > 0) {
+        summary = await generateLessonSummary({
+          topicTitle: topic?.title || 'Custom Practice',
+          exerciseHistory: exerciseHistory.map(h => ({
+            exercise: h.exercise,
+            userAnswer: h.userAnswer,
+            isCorrect: h.isCorrect
+          }))
+        });
+        setLessonSummary(summary);
+      }
+
+      // Mark as mastered with 100% proficiency
+      if (topic) {
+        setTopicProficiency(100);
+      }
+
+      onMastered(summary);
+      setCurrentStep('mastered');
+    } catch (e) {
+      console.error("Failed to generate lesson summary:", e);
+      // Proceed anyway but without summary
+      if (topic) setTopicProficiency(100);
+      onMastered();
+      setCurrentStep('mastered');
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
 
   const handleSubmitExercise = async (e?: React.FormEvent) => {
@@ -582,10 +623,7 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
               scenarioContext: roleplayData.scenario
             })}
             onComplete={() => {
-              // After roleplay, we are done
-              onMastered();
-              setCurrentStep('mastered');
-              // Note: We skip the explicit 'finalFeedback' generation for now as roleplay gives its own feedback.
+              handleFinishLesson();
             }}
           />
         )
@@ -884,7 +922,7 @@ export function ExerciseEngine({ topic, customWords, onMastered, onWordUpdate }:
               </Link>
             </Button>
           ) : (
-            <Button onClick={onMastered} className="w-full h-14 text-lg font-bold" size="lg">
+            <Button onClick={() => onMastered()} className="w-full h-14 text-lg font-bold" size="lg">
               Завершить тренировку <CheckCircle className="ml-2 h-5 w-5" />
             </Button>
           )}
